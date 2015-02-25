@@ -107,36 +107,87 @@ vise større struktur
 peke inn i en struktur, sende referanse videre, og bruker kan oppdatere data på denne plassen, 
 men du får ut en ny cursor som igjen peker til den delen av strukturen
 
-# Immstruct
+### assignments
+
+## Immstruct
 
 gamle referanser til en en helt annen plass i treet
 oppdatere den
 men ikke påvirke dem andre delene av treet
 
 lytte på endring, reagere på endring - swap
+skikkelig enkelt å rendre på nytt hele tiden!
 
-undo redo
+### assignments
+
+- render on swap
+
+men er det noe lurt da?
 
 ---
 
-Setup:
- - shouldComponentUpdate
+## React sin shouldComponentUpdate
 
-Main part:
- - omniscient
- - rationale
- - render loop
+### assignments 
+
+- egenskrevet mixin
+- bare rendre på nytt hvis tall er oddetall?
+
+kan man ikke bare sende immutable datastrukturer og gjøre en enkel reference equal sjekk? istedet for en deep equal for å sjekke om noe har endret seg? JO!
+
+### assignments
+
+fint for små komponenter
+hva når datastrukturer blir store
+må alle komponenetene vite om hele strukturen
+kan sende referansene til hvor du finner data - cursors
+
+immutable data har vært vanskelig i js, om gjør det
+har kommet flere i det siste, flux gjør det, men mye mer overhead i arkitektur
+
+vi syns det mangler for javascript
+
+## omniscient
+
+syntaktisk sukker
+rettningslinjer til hvordan du kan lage funksjonelle grensesnitt
+hjelper deg å følge disse
+
+kan oppnå akkurat det samme med ren react og immutable js
+ender med å implementere noe som ligner på immstruct og omniscient
+mindre battle tested løsning
+
+kan bruke state - i blant trenger man det - selvfølgelig er det mulig
+
+### assignments 
+- react with omniscients should component update
+
+endrer fokusområdet til content first
+alt en komponent trenger å være er innhold
+composability
+render funksjon som er lett å ressonnere over
+tar inn argument og jobber bare med det
+referencial transparency
+higher order components
+
+### assignments
+- pass props
+- pass cursors
+- effective re-render
+- render loop
+
+av og til trenger man ekstra funksjonalitet
+lagt opp til at den er enkel på å dele via mixins (traits) 
+legge funksjonene utenfor komponentene
+
+### assignments 
+
+- legge til én mixin
+- legge til flere mixins
+- legge til react life cycle mixins (alle er garantert til å bli utført, hvis det finnes flere)
 
 Assignments:
- - Create React components with simple `shouldComponentUpdates` as mixins.
- - Creating Omniscient components, pass in a tree props (only view)
- - Creating Omniscient components with cursors as input. (only view)
  - Creating updatable omniscient components (render loop)
- - Composing components
- - Using mixins (lifecycles)?
- - Advanced: Some advanced task
-
 
 Extras:
- - Reference Cursors? 
  - Remote data?

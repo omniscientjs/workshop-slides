@@ -75,19 +75,21 @@ clojure - vis frem en datastrukt, kodesnutt
 mori
 clojurescript
 
-- toJS, fromJS
-
 fordi data er immutable, kan data deles, fordi det aldri endres
 sub-trær i den større strukturen kan dele informasjon
 
 js idiomatisk api (i motsetning til feks mori)
 
 ### assignments
-
+- Check equality of structures.
+ 
 - list: create, push, indexOf, remove
 - map: create, get, set, merge
 
 vise større struktur
+
+- toJS, fromJS
+- updateIn, men hele strukturen blir oppdatert
 
 ### assignments
 
@@ -102,13 +104,18 @@ vise større struktur
 
 ## cursors
 
-Assignments:
- - Create immutable maps, list, update structure.
- - Check equality of structures.
- - Iterate over maps and transform data using `map`, `filter`, etc.
- - Test out creating cursors through immstruct
- - Print changes to cursors using immstruct.
- - Advanced: Some advanced task
+peke inn i en struktur, sende referanse videre, og bruker kan oppdatere data på denne plassen, 
+men du får ut en ny cursor som igjen peker til den delen av strukturen
+
+# Immstruct
+
+gamle referanser til en en helt annen plass i treet
+oppdatere den
+men ikke påvirke dem andre delene av treet
+
+lytte på endring, reagere på endring - swap
+
+undo redo
 
 ---
 

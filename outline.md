@@ -1,13 +1,25 @@
 # Outline
 
- - react intro
- - passing props
- - easy mental model
+## react intro
 
-Assignments:
- - Creating components (classes)
- - Passing props to component
+## passing props
+
+## easy mental model
+
+###  Assignment
+
+- Creating components (classes)
+- Assignment: Passing props to component
+
+## composable components
+
+### Assignments
  - Composing components (children)
+
+## virtual DOM
+
+### Assignments
+
  - Render twice to update view using setTimeout.
  - Render a clock using setInterval
  - Advanced: Some advanced task

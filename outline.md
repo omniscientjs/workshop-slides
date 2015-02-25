@@ -10,6 +10,7 @@ Assignments:
  - Composing components (children)
  - Render twice to update view using setTimeout.
  - Render a clock using setInterval
+ - Advanced: Some advanced task
 
 ---
 
@@ -29,6 +30,7 @@ Assignments:
  - Iterate over maps and transform data using `map`, `filter`, etc.
  - Test out creating cursors through immstruct
  - Print changes to cursors using immstruct.
+ - Advanced: Some advanced task
 
 ---
 
@@ -47,6 +49,7 @@ Assignments:
  - Creating updatable omniscient components (render loop)
  - Composing components
  - Using mixins (lifecycles)?
+ - Advanced: Some advanced task
 
 
 Extras:

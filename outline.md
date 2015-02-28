@@ -1,24 +1,22 @@
-# Outline
+# react intro
 
-## react intro
-
-## passing props
+# passing props
 
 ## easy mental model
 
-###  Assignment
+##  Assignment
 
 - Creating components (classes)
 - Assignment: Passing props to component
 
-## composable components
+# composable components
 
-### Assignments
+## Assignments
  - Composing components (children)
 
-## virtual DOM
+# virtual DOM
 
-### Assignments
+## Assignments
 
  - Render twice to update view using setTimeout.
  - Render a clock using setInterval
@@ -30,32 +28,124 @@ Setup:
  - react component state change causes re-render
  - state gets out of hand
 
-## functional paradigms
+# functional paradigm
 
-referential transparency
-same input, same output
+## referential transparency
 
-side effect free 
+Property of parts of computer programs. An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program. 
 
-but we need side effects - dom, ajax, logging
+In other words, given the same input, the program has the same effects and outputs - Side effect free.
+
+`42 + 42 => 84`
+
+`var global = 42; global + 42 => ???`
+
+For programs to be interesting we actually need state and side effects!
+
+Common examples include the dom, ajax communcation, logging etc.
+
+## mental model
+
+Why do we strive for principles of functional programming? 
+Easier mental model, easier to write, modular programs, 
+decompose problems into parts
 
 ## higher order functions
 
-grunnleggende byggestener i funksjonell programmering
+The glue. Primary building block of functional programming.
 
-## metal model
+Functions as values. Functions can take functions as arguments. 
+Functions can return functions. 
 
-### assignments
+```
+var adder = function (add) {
+  return /*solution function (x) {
+    return add + x;
+  };*/
+};
+var add2 = adder(2);
+add2(4); // 6
+```
+
+## assignments
 
 - map
+```
+var list = [1, 2, 3];
+var square = function (n) {
+  /*solution return n * n;*/
+};
+it('squares numbers', function () {
+  list.map(square).should.eql([1, 4, 9])
+});
+```
+
 - filter
+```
+var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+var isFizzOrBuzz = function (n) {
+  /*solution return n % 5 == 0 || n % 3 == 0;*/
+};
+it('keeps fizzbuzz numbers', function () {
+  numbers.filter(isFizzOrBuzz).should.eql([3, 5, 6, 9, 10])
+});
+```
+
 - reduce
+```
+var numbers = [1, 2, 3, 4, 5];
+var multiply = function (acc, n) {
+  return acc * n;
+}
+it('multiplies numbers', function () {
+  numbers.reduce(multiply, 1).should.equal(120);
+});
+```
+
 - transform data
+```
+var episodes = [
+  { name: "Cartman Gets an Anal Probe" },
+  { name: "Weight Gain 4000" },
+  { name: "Volcano" },
+  { name: "Big Gay Al's Big Gay Boat Ride" },
+  { name: "An Elephant Makes Love to a Pig" },
+  { name: "Death" },
+  { name: "Pinkeye" },
+  { name: "Starvin' Marvin" },
+  { name: "Mr. Hankey, the Christmas Poo" },
+  { name: "Damien" },
+  { name: "Tom's Rhinoplasty" },
+  { name: "Mecha-Streisand" },
+  { name: "Cartman's Mom Is a Dirty Slut" }];
+
+function asName (obj) {
+  return obj.name;
+}
+
+it('maps episodes => name', function () {
+  episodes.map(asName)[0].should.equal("Cartman Gets an Anal Probe");
+  episodes.map(asName)[1].should.equal("Weight Gain 4000");
+});
+```
+
 - string
+```
+var name = 'bob';
 
-nye lister, pass på objekter i lister som kanskje kan peke til andre strukturer
+it('returns new strings', function () {
+  /*solution var names = name + ' & alice';*/
+  
+  names.should.equal('bob & alice');
+  name.should.equal('bob');
+});
+```
 
-## immutability 
+Note that while operations like map, filter, reduce etc. return new lists,
+the content of these lists may well be the same object references you
+started out with.
+
+# immutability 
 
 vi får 
 alt er ikke mutable, lett å miste oversikt, noen endrer noe som
@@ -126,16 +216,16 @@ men er det noe lurt da?
 
 ---
 
-## React sin shouldComponentUpdate
+# React sin shouldComponentUpdate
 
-### assignments 
+## assignments 
 
 - egenskrevet mixin
 - bare rendre på nytt hvis tall er oddetall?
 
 kan man ikke bare sende immutable datastrukturer og gjøre en enkel reference equal sjekk? istedet for en deep equal for å sjekke om noe har endret seg? JO!
 
-### assignments
+## assignments
 
 fint for små komponenter
 hva når datastrukturer blir store
@@ -147,7 +237,7 @@ har kommet flere i det siste, flux gjør det, men mye mer overhead i arkitektur
 
 vi syns det mangler for javascript
 
-## omniscient
+# omniscient
 
 syntaktisk sukker
 rettningslinjer til hvordan du kan lage funksjonelle grensesnitt
@@ -159,7 +249,7 @@ mindre battle tested løsning
 
 kan bruke state - i blant trenger man det - selvfølgelig er det mulig
 
-### assignments 
+## assignments 
 - react with omniscients should component update
 
 endrer fokusområdet til content first
@@ -170,7 +260,7 @@ tar inn argument og jobber bare med det
 referencial transparency
 higher order components
 
-### assignments
+## assignments
 - pass props
 - pass cursors
 - effective re-render
@@ -180,7 +270,7 @@ av og til trenger man ekstra funksjonalitet
 lagt opp til at den er enkel på å dele via mixins (traits) 
 legge funksjonene utenfor komponentene
 
-### assignments 
+## assignments 
 
 - legge til én mixin
 - legge til flere mixins

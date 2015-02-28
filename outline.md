@@ -66,6 +66,7 @@ var adder = function (add) {
 var add2 = adder(2);
 add2(4); // 6
 ```
+[run](http://omniscientjs.github.io/playground/#var%20adder%20%3D%20function%20(add)%20%7B%0A%20%20return%20function%20(x)%20%7B%0A%20%20%20%20return%20add%20%2B%20x%3B%0A%20%20%7D%3B%0A%7D%3B%0Avar%20add2%20%3D%20adder(2)%3B%0Ait('adds%202'%2C%20()%20%3D%3E%20add2(4).should.equal(6))%3B)
 
 ## assignments
 
@@ -79,6 +80,7 @@ it('squares numbers', function () {
   list.map(square).should.eql([1, 4, 9])
 });
 ```
+[run](http://omniscientjs.github.io/playground/#var%20list%20%3D%20%5B1%2C%202%2C%203%5D%3B%0Avar%20square%20%3D%20function%20(n)%20%7B%0A%20%20return%20n%20*%20n%3B%0A%7D%3B%0Ait('squares%20numbers'%2C%20function%20()%20%7B%0A%20%20list.map(square).should.eql(%5B1%2C%204%2C%209%5D)%0A%7D)%3B)
 
 - filter
 ```
@@ -90,6 +92,7 @@ it('keeps fizzbuzz numbers', function () {
   numbers.filter(isFizzOrBuzz).should.eql([3, 5, 6, 9, 10])
 });
 ```
+[run](http://omniscientjs.github.io/playground/#var%20numbers%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%2C%206%2C%207%2C%208%2C%209%2C%2010%5D%3B%0Avar%20isFizzOrBuzz%20%3D%20function%20(n)%20%7B%0A%20%20return%20n%20%25%205%20%3D%3D%200%20%7C%7C%20n%20%25%203%20%3D%3D%200%3B%0A%7D%3B%0Ait('keeps%20fizzbuzz%20numbers'%2C%20function%20()%20%7B%0A%20%20numbers.filter(isFizzOrBuzz).should.eql(%5B3%2C%205%2C%206%2C%209%2C%2010%5D)%0A%7D)%3B)
 
 - reduce
 ```
@@ -101,6 +104,7 @@ it('multiplies numbers', function () {
   numbers.reduce(multiply, 1).should.equal(120);
 });
 ```
+[run](http://omniscientjs.github.io/playground/#var%20numbers%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%3B%0Avar%20multiply%20%3D%20function%20(acc%2C%20n)%20%7B%0A%20%20return%20acc%20*%20n%3B%0A%7D%0Ait('multiplies%20numbers'%2C%20function%20()%20%7B%0A%20%20numbers.reduce(multiply%2C%201).should.equal(120)%3B%0A%7D)%3B)
 
 - transform data
 ```
@@ -128,6 +132,7 @@ it('maps episodes => name', function () {
   episodes.map(asName)[1].should.equal("Weight Gain 4000");
 });
 ```
+[run](http://omniscientjs.github.io/playground/#var%20episodes%20%3D%20%5B%0A%20%20%7B%20name%3A%20%22Cartman%20Gets%20an%20Anal%20Probe%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Weight%20Gain%204000%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Volcano%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Big%20Gay%20Al's%20Big%20Gay%20Boat%20Ride%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22An%20Elephant%20Makes%20Love%20to%20a%20Pig%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Death%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Pinkeye%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Starvin'%20Marvin%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Mr.%20Hankey%2C%20the%20Christmas%20Poo%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Damien%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Tom's%20Rhinoplasty%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Mecha-Streisand%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Cartman's%20Mom%20Is%20a%20Dirty%20Slut%22%20%7D%5D%3B%0A%0Afunction%20asName%20(obj)%20%7B%0A%20%20return%20obj.name%3B%0A%7D%0A%0Ait('maps%20episodes%20%3D%3E%20name'%2C%20function%20()%20%7B%0A%20%20episodes.map(asName)%5B0%5D.should.equal(%22Cartman%20Gets%20an%20Anal%20Probe%22)%3B%0A%20%20episodes.map(asName)%5B1%5D.should.equal(%22Weight%20Gain%204000%22)%3B%0A%7D)%3B)
 
 - string
 ```

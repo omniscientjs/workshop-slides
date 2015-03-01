@@ -24,7 +24,7 @@
 
 ---
 
-Setup: 
+Setup:
  - react component state change causes re-render
  - state gets out of hand
 
@@ -32,7 +32,7 @@ Setup:
 
 ## referential transparency
 
-Property of parts of computer programs. An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program. 
+Property of parts of computer programs. An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program.
 
 In other words, given the same input, the program has the same effects and outputs - Side effect free.
 
@@ -46,16 +46,16 @@ Common examples include the dom, ajax communcation, logging etc.
 
 ## mental model
 
-Why do we strive for principles of functional programming? 
-Easier mental model, easier to write, modular programs, 
+Why do we strive for principles of functional programming?
+Easier mental model, easier to write, modular programs,
 decompose problems into parts
 
 ## higher order functions
 
 The glue. Primary building block of functional programming.
 
-Functions as values. Functions can take functions as arguments. 
-Functions can return functions. 
+Functions as values. Functions can take functions as arguments.
+Functions can return functions.
 
 ```
 var adder = function (add) {
@@ -140,7 +140,7 @@ var name = 'bob';
 
 it('returns new strings', function () {
   /*solution var names = name + ' & alice';*/
-  
+
   names.should.equal('bob & alice');
   name.should.equal('bob');
 });
@@ -150,13 +150,13 @@ Note that while operations like map, filter, reduce etc. return new lists,
 the content of these lists may well be the same object references you
 started out with.
 
-# immutability 
+# immutability
 
-vi får 
+vi får
 alt er ikke mutable, lett å miste oversikt, noen endrer noe som
 fryse objekt - immutable
 hva når vi vil bruke det igjen? kopiere den?
-hvordan kan vi få til det? 
+hvordan kan vi få til det?
 kan vi kopiere alt hele tiden?
 to helt like,tar det ikke dobbelt så mye plass?
 
@@ -177,7 +177,7 @@ js idiomatisk api (i motsetning til feks mori)
 
 ### assignments
 - Check equality of structures.
- 
+
 - list: create, push, indexOf, remove
 - map: create, get, set, merge
 
@@ -199,7 +199,7 @@ vise større struktur
 
 ## cursors
 
-peke inn i en struktur, sende referanse videre, og bruker kan oppdatere data på denne plassen, 
+peke inn i en struktur, sende referanse videre, og bruker kan oppdatere data på denne plassen,
 men du får ut en ny cursor som igjen peker til den delen av strukturen
 
 ### assignments
@@ -223,7 +223,7 @@ men er det noe lurt da?
 
 # React sin shouldComponentUpdate
 
-## assignments 
+## assignments
 
 - egenskrevet mixin
 - bare rendre på nytt hvis tall er oddetall?
@@ -254,7 +254,7 @@ mindre battle tested løsning
 
 kan bruke state - i blant trenger man det - selvfølgelig er det mulig
 
-## assignments 
+## assignments
 - react with omniscients should component update
 
 endrer fokusområdet til content first
@@ -272,10 +272,10 @@ higher order components
 - render loop
 
 av og til trenger man ekstra funksjonalitet
-lagt opp til at den er enkel på å dele via mixins (traits) 
+lagt opp til at den er enkel på å dele via mixins (traits)
 legge funksjonene utenfor komponentene
 
-## assignments 
+## assignments
 
 - legge til én mixin
 - legge til flere mixins

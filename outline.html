@@ -69,27 +69,31 @@ Setup:
 
 "An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program."
 
-- In other words, given the same input, the program has the same effects and outputs
-- Side effect free.
+Given the same input, the program has the same effects and outputs
+
+Side effect free.
 
 `42 + 42 => 84`
 
-`var global = 42; global + 42 => ???`
+```
+var global = 42;
+...
+global + 42 => ???
+```
 
 ???
 
 - Property of parts of computer programs.
-
 - For programs to be interesting we actually need state and side effects!
-
 - Common examples include the dom, ajax communcation, logging etc.
 
 ---
 
 ## mental model
 
-- Why do we strive for principles of functional programming?
-- Easier mental model
+Strive for principles of functional programming?
+
+- easier mental model
 - easier to write
 - modular programs
 - decompose problems into parts
@@ -98,19 +102,21 @@ Setup:
 
 ## higher order functions
 
-The glue. Primary building block of functional programming.
+The glue.
 
-- Functions as values.
-- Functions can take functions as arguments.
-- Functions can return functions.
+Primary building block of functional programming.
+
+- Functions as values
+- Functions can take functions as arguments
+- Functions can return functions
 
 ---
 
 ```
 var adder = function (add) {
-  return /*solution function (x) {
+  return function (x) {
     return add + x;
-  };*/
+  };
 };
 var add2 = adder(2);
 add2(4); // 6
@@ -119,12 +125,10 @@ add2(4); // 6
 
 ---
 
-- map
-
 ```
 var list = [1, 2, 3];
 var square = function (n) {
-  /*solution return n * n;*/
+  return n * n;
 };
 it('squares numbers', function () {
   list.map(square).should.eql([1, 4, 9])
@@ -133,8 +137,6 @@ it('squares numbers', function () {
 [run](http://omniscientjs.github.io/playground/#var%20list%20%3D%20%5B1%2C%202%2C%203%5D%3B%0Avar%20square%20%3D%20function%20(n)%20%7B%0A%20%20return%20n%20*%20n%3B%0A%7D%3B%0Ait('squares%20numbers'%2C%20function%20()%20%7B%0A%20%20list.map(square).should.eql(%5B1%2C%204%2C%209%5D)%0A%7D)%3B)
 
 ---
-
-- filter
 
 ```
 var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -149,8 +151,6 @@ it('keeps fizzbuzz numbers', function () {
 
 ---
 
-- reduce
-
 ```
 var numbers = [1, 2, 3, 4, 5];
 var multiply = function (acc, n) {
@@ -163,8 +163,6 @@ it('multiplies numbers', function () {
 [run](http://omniscientjs.github.io/playground/#var%20numbers%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%3B%0Avar%20multiply%20%3D%20function%20(acc%2C%20n)%20%7B%0A%20%20return%20acc%20*%20n%3B%0A%7D%0Ait('multiplies%20numbers'%2C%20function%20()%20%7B%0A%20%20numbers.reduce(multiply%2C%201).should.equal(120)%3B%0A%7D)%3B)
 
 ---
-
-- transform data
 
 ```
 var episodes = [
@@ -195,13 +193,11 @@ it('maps episodes => name', function () {
 
 ---
 
-- string
-
 ```
 var name = 'bob';
 
 it('returns new strings', function () {
-  /*solution var names = name + ' & alice';*/
+  var names = name + ' & alice';
 
   names.should.equal('bob & alice');
   name.should.equal('bob');
@@ -222,16 +218,16 @@ started out with.
 
 ---
 
-- ES5 Object.freeze()
+- Object.freeze()
 
 ???
 
-- alt er ikke mutable, lett å miste oversikt, noen endrer noe som
-- fryse objekt - immutable
-- hva når vi vil bruke det igjen? kopiere den?
-- hvordan kan vi få til det?
-- kan vi kopiere alt hele tiden?
-- to helt like,tar det ikke dobbelt så mye plass?
+- not everything is immutable, easy to loose track of modifications
+- what about when we want to use it again?
+- we can copy it?
+- how?
+- can we copy everything all the time?
+- the two are almost exaclty the same - doesnt this use twice the space?
 
 ---
 
@@ -245,7 +241,7 @@ clojure
 
 ---
 
-# alternatives
+# js alternatives
 
 - ki
 - mori
@@ -255,12 +251,14 @@ clojure
 
 ## immutable.js
 
-- idiomatic javascript
+- immutable data strcutures for js
+- idiomatic javascript api
 - persistent data structures
 
 ???
 
 - smart, nerdy guy at facebook, lee byron
+- immutable structures for js
 - share structures
 - because data is immutable, data never changes, data can be shared
 - sub trees in the larger structure can share information
@@ -268,7 +266,6 @@ clojure
 ---
 
 ### assignments
-- Check equality of structures.
 
 ```
 var List = Immutable.List;
@@ -352,24 +349,23 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ### assignments
 
-- map
-- filter
-- reduce
-- transform data
-- string
-
-- range
-- repeat
+- range - create a list with 100 items
+- map - map over the numbers to double every number
+- filter - filter out every odd numbers
+- reduce - reduce the numbers to find their sum
 
 ---
 
 ## cursors
 
+
+???
+
+- similar to functional lenses
 - pointers into a data structure
 - pass a reference on to others
 - knows its path in the structure
 - listen for updates
-- immutable
 
 ### assignments
 
@@ -377,22 +373,61 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ## Immstruct
 
-gamle referanser til en en helt annen plass i treet
-oppdatere den
-men ikke påvirke dem andre delene av treet
+cursors can update a piece in a structure, but returns the new structure
 
-lytte på endring, reagere på endring - swap
-skikkelig enkelt å rendre på nytt hele tiden!
+abstraction to update the structure when a piece changes
+
+without affecting the other parts of the tree
+
+listen for changes - swap
+
+super easy to re-render on swap
+
+---
 
 ### assignments
 
-- render on swap
+```
+var Counter  = React.createClass({
 
-men er det noe lurt da?
+  render: function () {
+
+    var counter = this.props.counter;
+    var inc = function (e) {
+      counter.update(function (v) {
+        return v + 1;
+      });
+    }
+
+    return <button onClick={inc}>{counter.deref()}</button>;
+  }
+});
+
+
+var data = immstruct({ counter: 0 });
+
+var render = function () {
+  React.render(<Counter counter={data.cursor('counter')} />, el);
+};
+
+data.on('swap', function () {
+  render();
+});
+
+render();
+```
+
+???
+
+- Is that smart?
+- React is clever, and super fast
+- But can we do even better than with plain react
 
 ---
 
 # React sin shouldComponentUpdate
+
+todo torgeir
 
 ## assignments
 

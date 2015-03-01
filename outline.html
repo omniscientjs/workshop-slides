@@ -1,18 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+---
+
 # react intro
 
 # passing props
 
 ## easy mental model
 
+---
+
 ##  Assignment
 
 - Creating components (classes)
 - Assignment: Passing props to component
 
+---
+
 # composable components
 
 ## Assignments
  - Composing components (children)
+
+---
 
 # virtual DOM
 
@@ -28,34 +59,52 @@ Setup:
  - react component state change causes re-render
  - state gets out of hand
 
+---
+
 # functional paradigm
+
+---
 
 ## referential transparency
 
-Property of parts of computer programs. An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program.
+"An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program."
 
-In other words, given the same input, the program has the same effects and outputs - Side effect free.
+- In other words, given the same input, the program has the same effects and outputs
+- Side effect free.
 
 `42 + 42 => 84`
 
 `var global = 42; global + 42 => ???`
 
-For programs to be interesting we actually need state and side effects!
+???
 
-Common examples include the dom, ajax communcation, logging etc.
+- Property of parts of computer programs.
+
+- For programs to be interesting we actually need state and side effects!
+
+- Common examples include the dom, ajax communcation, logging etc.
+
+---
 
 ## mental model
 
-Why do we strive for principles of functional programming?
-Easier mental model, easier to write, modular programs,
-decompose problems into parts
+- Why do we strive for principles of functional programming?
+- Easier mental model
+- easier to write
+- modular programs
+- decompose problems into parts
+
+---
 
 ## higher order functions
 
 The glue. Primary building block of functional programming.
 
-Functions as values. Functions can take functions as arguments.
-Functions can return functions.
+- Functions as values.
+- Functions can take functions as arguments.
+- Functions can return functions.
+
+---
 
 ```
 var adder = function (add) {
@@ -68,9 +117,10 @@ add2(4); // 6
 ```
 [run](http://omniscientjs.github.io/playground/#var%20adder%20%3D%20function%20(add)%20%7B%0A%20%20return%20function%20(x)%20%7B%0A%20%20%20%20return%20add%20%2B%20x%3B%0A%20%20%7D%3B%0A%7D%3B%0Avar%20add2%20%3D%20adder(2)%3B%0Ait('adds%202'%2C%20()%20%3D%3E%20add2(4).should.equal(6))%3B)
 
-## assignments
+---
 
 - map
+
 ```
 var list = [1, 2, 3];
 var square = function (n) {
@@ -82,7 +132,10 @@ it('squares numbers', function () {
 ```
 [run](http://omniscientjs.github.io/playground/#var%20list%20%3D%20%5B1%2C%202%2C%203%5D%3B%0Avar%20square%20%3D%20function%20(n)%20%7B%0A%20%20return%20n%20*%20n%3B%0A%7D%3B%0Ait('squares%20numbers'%2C%20function%20()%20%7B%0A%20%20list.map(square).should.eql(%5B1%2C%204%2C%209%5D)%0A%7D)%3B)
 
+---
+
 - filter
+
 ```
 var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 var isFizzOrBuzz = function (n) {
@@ -94,7 +147,10 @@ it('keeps fizzbuzz numbers', function () {
 ```
 [run](http://omniscientjs.github.io/playground/#var%20numbers%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%2C%206%2C%207%2C%208%2C%209%2C%2010%5D%3B%0Avar%20isFizzOrBuzz%20%3D%20function%20(n)%20%7B%0A%20%20return%20n%20%25%205%20%3D%3D%200%20%7C%7C%20n%20%25%203%20%3D%3D%200%3B%0A%7D%3B%0Ait('keeps%20fizzbuzz%20numbers'%2C%20function%20()%20%7B%0A%20%20numbers.filter(isFizzOrBuzz).should.eql(%5B3%2C%205%2C%206%2C%209%2C%2010%5D)%0A%7D)%3B)
 
+---
+
 - reduce
+
 ```
 var numbers = [1, 2, 3, 4, 5];
 var multiply = function (acc, n) {
@@ -106,7 +162,10 @@ it('multiplies numbers', function () {
 ```
 [run](http://omniscientjs.github.io/playground/#var%20numbers%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%3B%0Avar%20multiply%20%3D%20function%20(acc%2C%20n)%20%7B%0A%20%20return%20acc%20*%20n%3B%0A%7D%0Ait('multiplies%20numbers'%2C%20function%20()%20%7B%0A%20%20numbers.reduce(multiply%2C%201).should.equal(120)%3B%0A%7D)%3B)
 
+---
+
 - transform data
+
 ```
 var episodes = [
   { name: "Cartman Gets an Anal Probe" },
@@ -134,7 +193,10 @@ it('maps episodes => name', function () {
 ```
 [run](http://omniscientjs.github.io/playground/#var%20episodes%20%3D%20%5B%0A%20%20%7B%20name%3A%20%22Cartman%20Gets%20an%20Anal%20Probe%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Weight%20Gain%204000%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Volcano%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Big%20Gay%20Al's%20Big%20Gay%20Boat%20Ride%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22An%20Elephant%20Makes%20Love%20to%20a%20Pig%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Death%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Pinkeye%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Starvin'%20Marvin%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Mr.%20Hankey%2C%20the%20Christmas%20Poo%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Damien%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Tom's%20Rhinoplasty%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Mecha-Streisand%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Cartman's%20Mom%20Is%20a%20Dirty%20Slut%22%20%7D%5D%3B%0A%0Afunction%20asName%20(obj)%20%7B%0A%20%20return%20obj.name%3B%0A%7D%0A%0Ait('maps%20episodes%20%3D%3E%20name'%2C%20function%20()%20%7B%0A%20%20episodes.map(asName)%5B0%5D.should.equal(%22Cartman%20Gets%20an%20Anal%20Probe%22)%3B%0A%20%20episodes.map(asName)%5B1%5D.should.equal(%22Weight%20Gain%204000%22)%3B%0A%7D)%3B)
 
+---
+
 - string
+
 ```
 var name = 'bob';
 
@@ -146,45 +208,147 @@ it('returns new strings', function () {
 });
 ```
 
+---
+
+# immutability
+
 Note that while operations like map, filter, reduce etc. return new lists,
 the content of these lists may well be the same object references you
 started out with.
 
-# immutability
+???
 
-vi får
-alt er ikke mutable, lett å miste oversikt, noen endrer noe som
-fryse objekt - immutable
-hva når vi vil bruke det igjen? kopiere den?
-hvordan kan vi få til det?
-kan vi kopiere alt hele tiden?
-to helt like,tar det ikke dobbelt så mye plass?
+- but not everything is immutable
 
-dele strukturer
+---
 
-## (immutable.js)
+- ES5 Object.freeze()
 
-smart nerdete type på facebook som har jobbet med dette lee byron
+???
 
-clojure - vis frem en datastrukt, kodesnutt
-mori
-clojurescript
+- alt er ikke mutable, lett å miste oversikt, noen endrer noe som
+- fryse objekt - immutable
+- hva når vi vil bruke det igjen? kopiere den?
+- hvordan kan vi få til det?
+- kan vi kopiere alt hele tiden?
+- to helt like,tar det ikke dobbelt så mye plass?
 
-fordi data er immutable, kan data deles, fordi det aldri endres
-sub-trær i den større strukturen kan dele informasjon
+---
 
-js idiomatisk api (i motsetning til feks mori)
+clojure
+
+```
+(def user {:firstname "torgeir"})
+(def modified-user (assoc user :lastname "thoresen"))
+(= user modified-user) // false
+```
+
+---
+
+# alternatives
+
+- ki
+- mori
+- clojurescript
+
+---
+
+## immutable.js
+
+- idiomatic javascript
+- persistent data structures
+
+???
+
+- smart, nerdy guy at facebook, lee byron
+- share structures
+- because data is immutable, data never changes, data can be shared
+- sub trees in the larger structure can share information
+
+---
 
 ### assignments
 - Check equality of structures.
 
-- list: create, push, indexOf, remove
-- map: create, get, set, merge
+```
+var List = Immutable.List;
 
-vise større struktur
+var initial = List([1, 2]);
+var modified = initial.push(3);
 
-- toJS, fromJS
-- updateIn, men hele strukturen blir oppdatert
+initial // 1, 2
+modified // 1, 2, 3
+
+```
+
+---
+
+```
+var initial = List.of(2, 4, 6, 8);
+var modified = initial.remove(2);
+modified // 2, 4, 8
+```
+
+---
+
+```
+List.of(10, 20, 30, 40, 50).indexOf(30); // 2
+```
+
+---
+
+```
+var Map = Immutable.Map;
+
+var map = Map({ "key": "value" });
+map.get('key'); // value
+```
+
+---
+
+```
+var initial = Map().set(List.of(1), 'list-of-one');
+initial.get(List.of(1)); // list-of-one
+```
+
+---
+
+```
+var first = Map({
+  firstname: 'torgeir'
+});
+
+var last = Map({
+  lastname: 'thoresen'
+});
+
+var merged = first.merge(last);
+
+merged.toJS() // { firstname: 'torgeir', lastname: 'thoresen' }
+```
+
+---
+
+```
+var data = Immutable.fromJS({ some: { structure: [1, 2, 3] } });
+
+data.getIn(['some', 'structure']) // Immutable.List([1, 2, 3])
+
+var updated = data.setIn(['some', 'structure', '0'], 42);
+
+updated.toJS(); // { some: { structure: [42, 2, 3 ] } }
+data.toJS(); // { some: { structure: [1, 2, 3 ] } }
+```
+
+---
+
+debugging
+
+```
+updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
+```
+
+---
 
 ### assignments
 
@@ -197,12 +361,19 @@ vise større struktur
 - range
 - repeat
 
+---
+
 ## cursors
 
-peke inn i en struktur, sende referanse videre, og bruker kan oppdatere data på denne plassen,
-men du får ut en ny cursor som igjen peker til den delen av strukturen
+- pointers into a data structure
+- pass a reference on to others
+- knows its path in the structure
+- listen for updates
+- immutable
 
 ### assignments
+
+---
 
 ## Immstruct
 
@@ -286,3 +457,13 @@ Assignments:
 
 Extras:
  - Remote data?
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
+

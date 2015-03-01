@@ -427,16 +427,47 @@ render();
 
 # React sin shouldComponentUpdate
 
-todo torgeir
+- A react performance optimization
+- Override the function to tell react when a rerender is not nescessary
+- given the current props, the rendered result will not change
 
 ## assignments
 
-- egenskrevet mixin
-- bare rendre på nytt hvis tall er oddetall?
+write your own mixin that only rerenders when your component is passed odd numbers
 
-kan man ikke bare sende immutable datastrukturer og gjøre en enkel reference equal sjekk? istedet for en deep equal for å sjekke om noe har endret seg? JO!
+```
+var OnlyShowOddNumbers = {
+  shouldComponentUpdate: function (nextProps) {
+    return nextProps.number % 1 == 0;
+  }
+};
+
+var OddNumbers = React.createClass({
+  mixins: [OnlyShowOddNumbers],
+  render: function () {
+    return <span>{this.props.number}</span>;
+  }
+});
+
+function render (n) {
+  React.render(OddNumbers({ number: n }), el);
+}
+
+var i = 0;
+setInterval(function () {
+  render(i++)
+}, 1000);
+```
+
+- so, we want to render all the time - its easy right
+- here's how we can prevent it
+- wont this make a perfect fit for immutable datastructures?
+- in stead of deep equaling all arguments to check if theyve changed, and we need to re-render
+- YES
 
 ## assignments
+
+todo show this?
 
 fint for små komponenter
 hva når datastrukturer blir store

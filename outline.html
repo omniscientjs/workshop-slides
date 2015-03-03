@@ -514,6 +514,8 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ## Immstruct
 
+http://omniscientjs.github.io/playground/#console.clear()%3B%0A%0Acomponent%20%3D%20component.withDefaults(%7Bjsx%3Atrue%7D)%0Avar%20data%20%3D%20immstruct(%7B%0A%20%20l1%3A%20%7B%0A%20%20%20%20l2%3A%20%7B%0A%20%20%20%20%20%20l3%3A%20%7B%0A%20%20%20%20%20%20%20%20l4%3A%20%22initial%22%2C%0A%20%20%20%20%20%20%20%20l44%3A%20%7B%20l5%3A%20true%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%2C%0A%20%20%20%20l22%3A%20%7B%20l3%3A%20true%20%7D%0A%20%20%7D%0A%7D)%3B%0A%0Avar%20newData%20%3D%20data.cursor().updateIn(%0A%20%20%5B'l1'%2C%20'l2'%2C%20'l3'%2C%20'l4'%5D%2C%0A%20%20_%20%3D%3E%20'yes')%3B%0A%0Adata.cursor(%5B'l1'%2C%20'l2'%2C%20'l3'%2C%20'l44'%5D)%0A%20%20.deref()%0A%20%20.should.equal(%0A%20%20%20%20newData.cursor(%5B'l1'%2C%20'l2'%2C%20'l3'%2C%20'l44'%5D)%0A%20%20%20%20%20%20.deref())%0A%0Adata.cursor(%5B'l1'%2C%20'l22'%5D)%0A%20%20.deref()%0A%20%20.should.equal(%0A%20%20%20%20newData.cursor(%5B'l1'%2C%20'l22'%5D)%0A%20%20%20%20%20%20.deref())%0A%0Aconsole.log(data.cursor(%5B'l1'%2C%20'l22'%5D).deref())%0A
+
 cursors can update a piece in a structure, but returns the new structure
 
 abstraction to update the structure when a piece changes

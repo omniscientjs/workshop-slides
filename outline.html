@@ -202,80 +202,79 @@ Setup:
  - react component state change causes re-render
  - state gets out of hand
 
- åpner for mange nye muligheter
- kan forstatt bajse på leggen
- ta det ett skritt lenger
+- opens many new posibilities
+- can still fuck things up
 
- for å kunne gjenskal den mentale modellen som vi hadde fra html
- låne konsepter fra funksjonell programmering
- og det gjøre resonnering om grensesnittene våre enklere.
- less error prone system
+- to recreate the mental model from html
+- borrow concepts from functional programming
+- makes reasoning about or user intercaes easier
+- easier to make less error prone system
 
 ---
 
 # functional paradigm
 
----
+## the mental model
 
-## mental model
+???
 
-Strive for principles of functional programming?
-
+- why strive for principles of functional programming?
 - easier mental model
 - easier to write
 - modular programs
 - decompose problems into parts
 
-???
-
-- in terms of functional views, as a result, when you find a bug, just dig into the component and _know_ that this is where all 
+- in terms of functional views as a result, when you find a bug, just dig into the component and _know_ that this is where all
 
 ---
 
-## referential transparency
+# referential transparency
 
-"An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program."
+## "An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program."
 
-Given the same input, the program has the same effects and outputs
-
-`42 + 42 => 84`
-
+```js
+42 + 42 => 84
 ```
+
+```js
 var global = 42;
+
 ...
+
 global + 42 => ???
 ```
 
 ???
 
-- Side effect free.
-- predictable output
-- easier to test
 - Property of parts of computer programs.
+
+- Given the same input, the program has the same effects and outputs
+- write code that functions that have predictable output, given some input
+- side effect free, dont depent on global state
+- makes code easier to test
+
 - For programs to be interesting we actually need state and side effects!
-- Common examples include the dom, ajax communcation, logging etc.
+- TODO remove? Common examples include the dom, ajax communcation, logging etc.
 
 ---
 
-## higher order functions
+# higher order functions
 
-The glue.
+## Primary building blocks
 
-Primary building block of functional programming.
+???
+
+- The glue.
 
 - Functions as values
 - Functions can take functions as arguments
 - Functions can return functions
 
-???
-
-composability
-
 ---
 
-TODO én playground
+# Functions that return functions
 
-```
+```js
 var adder = function (add) {
   return function (x) {
     return add + x;
@@ -284,11 +283,21 @@ var adder = function (add) {
 var add2 = adder(2);
 add2(4); // 6
 ```
-[run](http://omniscientjs.github.io/playground/#var%20adder%20%3D%20function%20(add)%20%7B%0A%20%20return%20function%20(x)%20%7B%0A%20%20%20%20return%20add%20%2B%20x%3B%0A%20%20%7D%3B%0A%7D%3B%0Avar%20add2%20%3D%20adder(2)%3B%0Ait('adds%202'%2C%20()%20%3D%3E%20add2(4).should.equal(6))%3B)
+
+???
+
+- function that creates other functions
+- the inner function is said to close over `add`
+- available after the outer function has returned
+- we create a function that always return add2
 
 ---
 
-```
+# Function that takes another function as an argument
+
+## From one representation to another
+
+```js
 var list = [1, 2, 3];
 var square = function (n) {
   return n * n;
@@ -297,24 +306,36 @@ it('squares numbers', function () {
   list.map(square).should.eql([1, 4, 9])
 });
 ```
-[run](http://omniscientjs.github.io/playground/#var%20list%20%3D%20%5B1%2C%202%2C%203%5D%3B%0Avar%20square%20%3D%20function%20(n)%20%7B%0A%20%20return%20n%20*%20n%3B%0A%7D%3B%0Ait('squares%20numbers'%2C%20function%20()%20%7B%0A%20%20list.map(square).should.eql(%5B1%2C%204%2C%209%5D)%0A%7D)%3B)
+
+???
+
+- like a physical map, go from one place to another
+- maps one representation into another
+- transforms the dataset into another
 
 ---
 
-```
+# Function that takes another function as an argument
+
+## Filters out items of list
+
+```js
 var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 var isFizzOrBuzz = function (n) {
-  /*solution return n % 5 == 0 || n % 3 == 0;*/
+  return n % 5 == 0 || n % 3 == 0;
 };
 it('keeps fizzbuzz numbers', function () {
   numbers.filter(isFizzOrBuzz).should.eql([3, 5, 6, 9, 10])
 });
 ```
-[run](http://omniscientjs.github.io/playground/#var%20numbers%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%2C%206%2C%207%2C%208%2C%209%2C%2010%5D%3B%0Avar%20isFizzOrBuzz%20%3D%20function%20(n)%20%7B%0A%20%20return%20n%20%25%205%20%3D%3D%200%20%7C%7C%20n%20%25%203%20%3D%3D%200%3B%0A%7D%3B%0Ait('keeps%20fizzbuzz%20numbers'%2C%20function%20()%20%7B%0A%20%20numbers.filter(isFizzOrBuzz).should.eql(%5B3%2C%205%2C%206%2C%209%2C%2010%5D)%0A%7D)%3B)
 
 ---
 
-```
+# Function that takes another function as an argument
+
+## Reduces items of a list into an accumulator
+
+```js
 var numbers = [1, 2, 3, 4, 5];
 var multiply = function (acc, n) {
   return acc * n;
@@ -323,11 +344,12 @@ it('multiplies numbers', function () {
   numbers.reduce(multiply, 1).should.equal(120);
 });
 ```
-[run](http://omniscientjs.github.io/playground/#var%20numbers%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%5D%3B%0Avar%20multiply%20%3D%20function%20(acc%2C%20n)%20%7B%0A%20%20return%20acc%20*%20n%3B%0A%7D%0Ait('multiplies%20numbers'%2C%20function%20()%20%7B%0A%20%20numbers.reduce(multiply%2C%201).should.equal(120)%3B%0A%7D)%3B)
 
 ---
 
-```
+# Data transformation
+
+```js
 var episodes = [
   { name: "Cartman Gets an Anal Probe" },
   { name: "Weight Gain 4000" },
@@ -352,44 +374,58 @@ it('maps episodes => name', function () {
   episodes.map(asName)[1].should.equal("Weight Gain 4000");
 });
 ```
-[run](http://omniscientjs.github.io/playground/#var%20episodes%20%3D%20%5B%0A%20%20%7B%20name%3A%20%22Cartman%20Gets%20an%20Anal%20Probe%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Weight%20Gain%204000%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Volcano%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Big%20Gay%20Al's%20Big%20Gay%20Boat%20Ride%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22An%20Elephant%20Makes%20Love%20to%20a%20Pig%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Death%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Pinkeye%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Starvin'%20Marvin%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Mr.%20Hankey%2C%20the%20Christmas%20Poo%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Damien%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Tom's%20Rhinoplasty%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Mecha-Streisand%22%20%7D%2C%0A%20%20%7B%20name%3A%20%22Cartman's%20Mom%20Is%20a%20Dirty%20Slut%22%20%7D%5D%3B%0A%0Afunction%20asName%20(obj)%20%7B%0A%20%20return%20obj.name%3B%0A%7D%0A%0Ait('maps%20episodes%20%3D%3E%20name'%2C%20function%20()%20%7B%0A%20%20episodes.map(asName)%5B0%5D.should.equal(%22Cartman%20Gets%20an%20Anal%20Probe%22)%3B%0A%20%20episodes.map(asName)%5B1%5D.should.equal(%22Weight%20Gain%204000%22)%3B%0A%7D)%3B)
 
+- all of these are examples of higher order functions
+- you pass functions that are used to perform operations on data
+- keep their result
 
-alt dette er eksempler på higher order functions
-sender funksjoner som blir brukt for å gjøre operasjoner
-alt er lister
-det programmering handelr om er endring av verdier over tid
-transformering av data fra en representasjon til en annen
+- operate on lists
+- what programming is about, munging data, transforming data from one representation to another
 
-hvorfor pure? og immutability? andre skal ikke kunne nedre på noe som du har som utgangspunkt
-
-oppgave
-
- - rekursivitet?
+- interesting properties: pure functions, no side effects, immutable structures
+- why pure/immutable? others cannot change what is your starting point/basis
 
 ---
 
-# immutability
+# assignment
 
-Note that while operations like map, filter, reduce etc. return new lists,
-the content of these lists may well be the same object references you
-started out with.
+## write a recursive function that sums the numbers of a list
 
-???
+```js
+it('should sum numbers', function () {
+ sum([1, 2, 3, 4], 0).should.equal(10);
+});
 
-- but not everything is immutable in js as of today
+function sum (list, acc) {
+   if (!list.length) return acc;
+   return sum(list.slice(1), acc + list[0])
+}
+```
 
 ---
 
-- Object.freeze()
+# Note
+# While some operations e.g. map, filter, reduce return new lists, the content of these lists may well be references to objects you started out with
 
 ???
 
-- not everything is immutable, easy to loose track of modifications
+- need to be aware
+- not everything is immutable in js as of today
+
+---
+
+# Object.freeze(someObject);
+
+???
+
+- not everything is immutable in js
+- easy to loose track of modifications
 - what can we do about it?
-- makes it immutable, fozen
+
+- Object.freeze() makes it immutable
+- "Can't add property <property>, object is not extensible""
 - not efficient
-- cant update it without copying all values to a new object
+- cant update an without copying all values to a new object
 
 - how can we copy it?
 - can we copy everything all the time?
@@ -397,9 +433,9 @@ started out with.
 
 ---
 
-clojure
+# clojure
 
-```
+```js
 (def user {:firstname "torgeir"})
 (def modified-user (assoc user :lastname "thoresen"))
 (= user modified-user) // false
@@ -407,15 +443,17 @@ clojure
 
 ???
 
-- some languages have immutable data by default
-- ta vare på det du output av det du gjør
-- ser aldri en void funksjon i funksjonell programmering
+- some languages have immutable data by default!
+- youre forced to keep the output of your operations
+- youll never see a void functions
 
 ---
 
-Some thing are immutable, in most languages!
+# Some things are immutable in most languages!
 
-```
+## string
+
+```js
 var name = 'bob';
 
 it('returns new strings', function () {
@@ -429,51 +467,88 @@ it('returns new strings', function () {
 - strings
 - primitive datatypes, ints
 
-javascript litt confused når det kommer til immutability
-- concat, slår sammen to lister, er immutable => får alltid en ny liste uten å røre den gamle
-- push, muterende => ingen grunn til det egentlig?
+---
+
+# Js is immutable
+
+## concat()
+
+```js
+var list = [1, 2, 3]
+
+var res = list.concat(4) // [1, 2, 3, 4]
+
+list // [1, 2, 3]
+```
+
+???
 
 ---
 
-# js alternatives
+# But js is confused
 
-- ki
-- mori
-- clojurescript
+## push()
+
+```js
+var list = [1, 2, 3]
+
+list.push(4) // 4
+
+list // [1, 2, 3, 4]
+```
+
+???
+
+- push, mutating => why?
+- you push 4, you get 4 back - yes, i know already, thanks
+
+---
+
+# immutable data
+
+## alternatives for js
+
+- [ki](http://ki-lang.org)
+- [mori](https://github.com/swannodette/mori)
+- [clojurescript](http://clojure.org/clojurescript)
 
 ???
 
 - there are alternatives for js
-- no one is javascript idiomatic
-- until..
+- and some of these are awesome
+- by super smart people
+- but no one is really javascript idiomatic
 
 ---
 
-## immutable.js
+# immutable.js
 
-- facebook
-- immutable data strcutures for js
-- idiomatic javascript api (behandler objekter slik du behandler javascript objekter ellers, samme operasjoner)
+## facebook
+## immutable data strcutures for js
+## idiomatic javascript api
 
 ???
-
 - smart, nerdy guy at facebook, lee byron
 - immutable structures for js
-- because data is immutable, data never changes, data can be shared
 
+- idiomatic: e.g. treat objects like you otherwise treat objects in javascript
+- you have access to the same operations
+
+- because data is immutable, data never changes, data can be shared
+- compared to freeze, this implementation can be fast
 - sub trees in the larger structure can share information
 - persistent data structures
 - share structures
 
-bilde av tree, når data endrer seg
+TODO bilde av tree, når data endrer seg
 
 ---
 
-### assignments
+# Immutable.js
 
-TODO én playground
+## List - push()
 
-```
+```js
 var List = Immutable.List;
 
 var initial = List([1, 2]);
@@ -481,26 +556,42 @@ var modified = initial.push(3);
 
 initial // 1, 2
 modified // 1, 2, 3
-
 ```
 
 ---
 
-```
-var initial = List.of(2, 4, 6, 8);
-var modified = initial.remove(2);
-modified // 2, 4, 8
-```
+# Immutable.js
 
----
+## List - indexOf()
 
-```
+```js
 List.of(10, 20, 30, 40, 50).indexOf(30); // 2
 ```
 
 ---
 
+# Immutable.js
+
+## List - remove() (..!)
+
+```js
+var initial = List.of(2, 4, 6, 8);
+var modified = initial.remove(2);
+
+modified // 2, 4, 8
 ```
+
+???
+
+- which even js couldnt do..
+
+---
+
+# Immutable.js
+
+## Map - get()
+
+```js
 var Map = Immutable.Map;
 
 var map = Map({ "key": "value" });
@@ -509,14 +600,22 @@ map.get('key'); // value
 
 ---
 
-```
+# Immutable.js
+
+## Map - complex keys
+
+```js
 var initial = Map().set(List.of(1), 'list-of-one');
 initial.get(List.of(1)); // list-of-one
 ```
 
 ---
 
-```
+# Immutable.js
+
+## Map - merge
+
+```js
 var first = Map({
   firstname: 'torgeir'
 });
@@ -532,7 +631,11 @@ merged.toJS() // { firstname: 'torgeir', lastname: 'thoresen' }
 
 ---
 
-```
+# Immutable.js
+
+## setIn() / toJS()
+
+```js
 var data = Immutable.fromJS({ some: { structure: [1, 2, 3] } });
 
 data.getIn(['some', 'structure']) // Immutable.List([1, 2, 3])
@@ -543,27 +646,104 @@ updated.toJS(); // { some: { structure: [42, 2, 3 ] } }
 data.toJS(); // { some: { structure: [1, 2, 3 ] } }
 ```
 
+???
+
 gotcha: hva om man setter inn enn VANLIG liste, og ikke en immutable én
+
 ---
 
-debugging
+# Immutable.js
 
-```
+## debugging
+
+```js
 updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 ```
 
 ---
 
-### assignments
+# assignments
 
-- range - create a list with 100 items
-- map - map over the numbers to double every number
-- filter - filter out every odd numbers
-- reduce - reduce the numbers to find their sum
+## range - create a list with 100 items
 
-- advanced: implement curry() in js
+## map - map over the numbers to double every number
 
-todo vise frem curry-oppgaven?
+## filter - filter out every odd numbers
+
+## reduce - reduce the numbers to find their sum
+
+## advanced: implement curry() in js
+
+---
+
+# curry
+
+```js
+curry = function (fn) {
+  var numargs = fn.length;
+  return createRecurser([]);
+
+  function createRecurser (acc) {
+    return function () {
+      var args = [].slice.call(arguments);
+      return recurse(acc, args);
+    };
+  }
+
+  function recurse (acc, args) {
+    var newacc = acc.concat(args);
+    if (newacc.length < numargs) {
+      return createRecurser(newacc);
+    }
+    else {
+      return fn.apply(this, newacc);
+    }
+  }
+}
+```
+
+---
+
+# curry 2
+
+```js
+var add = curry(function (a, b, c) {
+  return a + b + c;
+});
+
+var add2 = add(2);
+var add4 = add2(2);
+console.log(add(2)(2)(2)); // 6
+console.log(add2(2)(3)); // 7
+console.log(add2(2)(4)); // 8
+console.log(add4(5)); // 9
+
+console.log(add(1, 2, 3)); // 6
+console.log(add(1)(2, 3)); // 6
+console.log(add(1, 2)(3)); // 6
+console.log(add(1)(2)(3)); // 6
+```
+
+---
+
+# curry 3
+
+```js
+var times = curry(function (a, b, c) {
+  return a * b * c;
+});
+
+var times2 = times(2);
+var times4 = times2(2);
+console.log(times(2)(2)(2)); // 8
+console.log(times2(2)(3)); // 12
+console.log(times4(4)); // 16
+
+console.log(times(2, 3, 4)); // 24
+console.log(times(2)(3, 4)); // 24
+console.log(times(2, 3)(4)); // 24
+console.log(times(2)(3)(4)); // 24
+```
 
 ---
 

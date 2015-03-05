@@ -366,9 +366,9 @@ var square = function (x) {
 ## "An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program."
 
 ```js
-var global = 42;
-maybeModifyGlobal();
-console.log(global);
+var x = 2;
+var y = x + 1;
+var z = x + y; // var z = 3;
 ```
 
 ???

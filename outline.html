@@ -804,6 +804,18 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ## advanced: implement curry() in js
 
+???
+
+---
+
+# curry
+
+```js
+var add = function (a, b) { return a + b };
+var addCurried = curry(add);
+addCurried(2)(6); // 8
+```
+
 ---
 
 # curry

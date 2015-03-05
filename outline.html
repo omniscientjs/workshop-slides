@@ -27,12 +27,16 @@ class: center, middle
 # The Beginning
 ## Static HTML, No JS
 
+???
+
 First there was pure, perfect static model: Just rendering in declarative way. Things were easy to understand just by taking a glance. But there were no inputs. Just static texts as values and attributes.
 
 ---
 
 # The Need for Dynamic Views
 ## Using JS to change the DOM
+
+???
 
 Need for dynamic changes without server change. In time we got Mootools and jQuery. Now we had ways to traverse, update and manipulate the DOM with ease. Didn’t have much models or any good way in the code to represent what state we have in the DOM
 
@@ -41,12 +45,16 @@ Need for dynamic changes without server change. In time we got Mootools and jQue
 # The Need for Structural Views
 ## More Responsibility to JS
 
+???
+
 As time went and javascript got more and more popular and as we moved to thicker clients and more logic in the browser, we got things as Backbone. We had models and some javascript views, but still driven by massive blob of a side-effect that is the stateful DOM. It’s not necessarily easy to predict the current state of the DOM, even if we have some representation.
 
 ---
 
 # The De-tour Through Increased Power of Models
 ## Hard-linking Models and DOM
+
+???
 
 We also got things like Knockout, and later Angular, Ember and such. We could bind a model to a view. The problem is, you very rarely have a model which you can bind directly to a view, so you can have view models, or other representations, but then you’d have to either listen for propagating changes and having weird hacks for propagating changes in the object models doing dirty bit checking or some other polling. And you still have this built up state that’s not too easily reproducible or predictable. We still don’t have the same static mental model as in the pure HTML days
 
@@ -55,6 +63,8 @@ We also got things like Knockout, and later Angular, Ember and such. We could bi
 
 # Real Power of Programming
 ## Moving Views All The Way To JS
+
+???
 
 The next iteration for views is taking the back to a static model and predictable views. Instead of taking the step of moving more JS into the markup, we do the opposite and move views entirely into a representation in a declarative manner of writing composable views, just as with HTML - but with extended functionality. Instead of having a powerful programming language in a less powerful representation language, we move the representation to the programming language.
 
@@ -67,6 +77,8 @@ The next iteration for views is taking the back to a static model and predictabl
 
 # Static Mental Model Just Like Good Old HTML
 
+???
+
 Built for changes over time, and between each change it essentially does a refresh, but has a internal representation of the DOM which it's diffed gainst and the actual changes only occurs when the new generated virtual DOM diverges from the old.
 
 ---
@@ -77,6 +89,8 @@ React.render(
   document.body
 );
 ```
+
+???
 
 Many, or most, of you might have seen React before, but here is an example, in plain old JS.
 
@@ -93,7 +107,13 @@ var Hello = React.createClass({
 React.render(React.createElement(Hello), document.body);
 ```
 
+???
+
 Or we can make a component of it, which we can re-use in different settings and compose.
+
+In the latest version of React (0.13), they have transition into using ES6 classes, but you
+could also use module patterns or ES3 classes.
+
 
 ---
 
@@ -108,6 +128,8 @@ var Hello = React.createClass({
 var myProps = { user: { name: 'Hank Pym' } };
 React.render(React.createElement(Hello, myProps), document.body);
 ```
+
+???
 
 We can also pass properties to the components. Much like attributes and children of regular HTML, but instead of being restricted to a protocol of only strings, we can pass objects and more advanced constructs.
 
@@ -129,6 +151,8 @@ myProps.user.name = 'Scott Lang';
 React.render(React.createElement(Hello, myProps), document.body);
 ```
 
+???
+
 This will update the view, diff against the virtual dom and render the change. We see here a really static mental model. We can see that we, depending on the input, will print "Hello, SOME NAME!".
 
 ---
@@ -146,6 +170,7 @@ React.render(
   document.body);
 ```
 
+???
 
 In React 0.12.0, they changed from rendering components into rendering Elements based on classes. This to move towards ES6 "Classes". This means in vanilla React it can be somewhat verbose syntax for non-JSX, allthough it is still possible. We'll see later in this workshop how we can make working with vanilla JS better.
 
@@ -179,10 +204,108 @@ Do following assignments
 
 ---
 
-# composable components
+# Composability Through Components
 
-## Assignments
- - Composing components (children)
+???
+
+Just rendering a HTML document isn't much of an application, and we could just use
+HTML if we weren't making a more complex application. We need to combine different
+components for making larger structures.
+
+```jsx
+var Greeting = React.createClass({
+  render: function () {
+    return (
+      <div>
+        <h1>Hello, {this.props.user.name}!</h1>
+        <p>Here, have some chimichangas!</p>
+      </div>
+    );
+  }
+});
+
+var myProps = { user: { name: 'Wade Wilson' } };
+React.render(<Greeting user={myProps.user) />, document.body);
+```
+
+---
+
+```jsx
+var Hello = React.createClass({
+  render: function () {
+    return <h1>Hello, {this.props.username}!</h1>;
+  }
+});
+
+Var Greeting = React.createClass({
+  render: function () {
+    return (
+      <div>
+        <Hello username={this.props.user.name} />
+        <p>You look like Spider-man!</p>
+      </div>
+    );
+  }
+});
+
+var myProps = { user: { name: 'Wade Wilson' } };
+React.render(<Greeting user={myProps.user) />, document.body);
+```
+
+---
+
+```jsx
+var Hello = React.createClass({
+  render: function () {
+    return <h1>Hello, {this.props.children}!</h1>;
+  }
+});
+
+var Greeting = React.createClass({
+  render: function () {
+    return (<div>
+        <Hello><em>{this.props.user.name}</em></Hello>
+        <p>Wheres Pandapool?</p>
+      </div>);
+  }
+});
+
+var myProps = { user: { name: 'Wade Wilson' } };
+React.render(<Greeting user={myProps.user} />, document.body);
+```
+
+---
+
+# Functional Patterns for UI
+
+---
+
+```jsx
+var h1 = input => <h1>{input}</h1>;
+var em = input => <em>{input}</em>;
+var compose = (a, b) => (input => a(b(input)));
+var italicH1 = compose(h1, em);
+
+var Greeting = React.createClass({
+  render: function () { return (<div>
+        {italicH1(this.props.user.name)}
+        <p>Wheres Pandapool?</p>
+      </div>);
+  }
+});
+
+var myProps = { user: { name: 'Wade Wilson' } };
+React.render(<Greeting user={myProps.user} />, document.body);
+```
+
+---
+
+
+Workshop Tasks: http://omniscientjs.github.io/workshop
+
+Do following assignments
+- Part 1: Composing Simple Components
+- Part 1: Composing Components Through Children
 
 ---
 
@@ -224,7 +347,9 @@ Setup:
 - modular programs
 - decompose problems into parts
 
-- in terms of functional views as a result, when you find a bug, just dig into the component and _know_ that this is where all
+???
+
+- in terms of functional views, as a result, when you find a bug, just dig into the component and _know_ that this is where all
 
 ---
 

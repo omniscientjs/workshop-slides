@@ -747,88 +747,176 @@ console.log(times(2)(3)(4)); // 24
 
 ---
 
-## cursors
+# cursors
 
-- concept is similar to functional lenses
+???
+
+- another concept of functional programming, similar to functional lenses
 - pointers into a data structure
-- pass a reference on to others
 - cursor knows its path in the structure
 - get a value out of it,
 - or operate on the value
 
-separation of concerns
-isolere handlinger mot forskjellige deler av en strukturer i en applikasjon
-much like a view
-
-in terms of components; useful with react components
-a component "owns" a piece of state inside a larger structure
-
-yes we can pass object references as props
-what happens if one component mutates the value of a reference
-another component might have its props changed, tighlty couples the two components, horizontal coupling
-egentlig en bieffekt - et uhell
-slippery slope
-ikke lenger purity, ikke lenger god testbarhet, ikke lenger fordelere med concurrency
-
-React 13 will freeze props. Can pass immutable props? yes, but you cant update them.
-
-siden cursors bare passer referanser ned og ikke selve dataen
-kan vi faktisk bytte ut den delen av treet cursoren peker til, i det man gjør en gjør en operasjon på en cursor
-(som også er immutable)
-
-én struktur som ligger utenfor komponentene
-ingen komponenter refererer direkte til strukturen
-ingen kommunikasjon horizontalt, men alle komponenter
-får sine data fra toppen, som input - som én pure funksjon!
-
-???
-
-### assignments
-
-- vise hvordan man lager cursor
-- vise hvordan man update'er cursor
-- vise immutabilityen til en cursor
-- vise frem at en handler kalles i det man endrer på en cursor
-
-- advanced: lag funksjon som når den kalles alltid returnerer den nyeste strukturen
-
 ---
 
-## Immstruct
+# cursors example
 
-http://omniscientjs.github.io/playground/#console.clear()%3B%0A%0Acomponent%20%3D%20component.withDefaults(%7Bjsx%3Atrue%7D)%0Avar%20data%20%3D%20immstruct(%7B%0A%20%20l1%3A%20%7B%0A%20%20%20%20l2%3A%20%7B%0A%20%20%20%20%20%20l3%3A%20%7B%0A%20%20%20%20%20%20%20%20l4%3A%20%22initial%22%2C%0A%20%20%20%20%20%20%20%20l44%3A%20%7B%20l5%3A%20true%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%2C%0A%20%20%20%20l22%3A%20%7B%20l3%3A%20true%20%7D%0A%20%20%7D%0A%7D)%3B%0A%0Avar%20newData%20%3D%20data.cursor().updateIn(%0A%20%20%5B'l1'%2C%20'l2'%2C%20'l3'%2C%20'l4'%5D%2C%0A%20%20_%20%3D%3E%20'yes')%3B%0A%0Adata.cursor(%5B'l1'%2C%20'l2'%2C%20'l3'%2C%20'l44'%5D)%0A%20%20.deref()%0A%20%20.should.equal(%0A%20%20%20%20newData.cursor(%5B'l1'%2C%20'l2'%2C%20'l3'%2C%20'l44'%5D)%0A%20%20%20%20%20%20.deref())%0A%0Adata.cursor(%5B'l1'%2C%20'l22'%5D)%0A%20%20.deref()%0A%20%20.should.equal(%0A%20%20%20%20newData.cursor(%5B'l1'%2C%20'l22'%5D)%0A%20%20%20%20%20%20.deref())%0A%0Aconsole.log(data.cursor(%5B'l1'%2C%20'l22'%5D).deref())%0A
+```js
+var data = Immutable.Map({
+  show: 'South Park',
+  episodes: [
+    { name: "Cartman Gets an Anal Probe" },
+    { name: "Weight Gain 400" },
+    { name: "Volcano" },
+    { name: "Big Gay Al's Big Gay Boat Ride" },
+    { name: "An Elephant Makes Love to a Pig" },
+  ]
+});
 
-cursors can update a piece in a structure, but returns the new structure
+var episodes = Cursor.from(data, ['episodes']);
 
-abstraction to update the structure when a piece changes
-
-without affecting the other parts of the tree
-
-listen for changes - swap
-
-super easy to re-render on swap
-
-- show updating a cursor and logging on the swap event, to show whats updated
-
-kan gjøre endring
-gjøre noe når strukturen endrer seg
-refresh av data
-passer ikke det veldig bra med react - refhresher viewet når man rendrer på nytt?
-kan rendre hele greia på nytt
-
-???
-
-react is not a silver bullet
-atom had to move away from it
-to fragmented painting, to much gc on changes
-
-- SHOw tszackala, bytt det med black panter - render on swap, and change the cursor
-
----
-
-### assignments
-
+var updatedEpisode = episodes.update([2, 'name'], function (previousName) {
+  return previousName + '0';
+});
 ```
+
+???
+
+- can also listen for when the data of a cursor changes
+- isolate actions agains separate parts of a structure in an application
+- pass a reference on to others
+- is much like a view of the data
+
+- in terms of components; this is useful with react components - a component "owns" a piece of state
+- which we'll see in a bit, but first some assignments
+
+---
+
+# assignments
+
+## create a cursor
+
+## update a cursor
+
+## show that a cursor is immutable
+
+## show that a cursors callback is called when the cursor is updated
+
+## advanced: create a cursor, and an accompanying function that when called will always return the most recent value of the cursor
+
+???
+
+- we can pass object references as props like we've already seen
+- but, what happens if one component mutates the value of a reference?
+- another component might have its props changed
+- tighlty couples the two components, horizontal coupling
+- slippery slope; no longer purity, no longer easily testable, no longer advantages of concurrency
+
+- React 13 will freeze props. Can pass immutable props? yes, but you cant update them.
+
+- since cursors only pass references to the data, and not the data it self
+- we can actually swap the pars of the structure that the cursor points to
+- when the cursor is updated
+
+- can have ONE structure, outside the components
+- no one refers to the structure directly
+- prevents horizontal communicaiton
+- all components get their data from the top, as input, like arguments
+
+---
+
+# immstruct
+
+## cursors
+
+## updates the structure
+
+## triggers an event
+
+???
+
+- cursors can update a piece in a structure, but returns the new structure
+- abstraction to update the structure when a piece changes
+- without affecting the other parts of the tree
+- listen for changes!
+- super easy to re-render on swap
+
+---
+
+# immstruct example
+
+```js
+var data = immstruct({ something: 'initial' });
+
+data.on('swap', function (newData, oldData, path) {
+  console.log(
+    newData.toJS(), // { something: "updated" }
+    oldData.toJS(), // { something: "initial" }
+    path) // ['something']
+});
+
+data.cursor('something').update(function (oldValue) {
+  return 'updated';
+});
+```
+
+???
+
+- make a change
+- do something when the structure changes
+
+- resfresh of the data
+- isnt that a perfect fit with react - refreshes the view when you rerender
+- you can rerender the whole thing
+
+# TODO where?
+- react is not a silver bullet
+- atom had to move away from it
+- to fragmented painting, to much gc on changes
+
+---
+
+# assignments
+
+## recreate the `Hello` component that greets a name - make it re-render on swap, and change the cursor
+
+## create `Counter` component with a button that shows the number of times its been clicked
+
+## create a `Clock` component that re-renders every time the clock updates
+
+---
+
+# Hello
+
+```js
+var data = immstruct({ name: 'World!' });
+
+var Hello = React.createClass({
+  render: function () {
+    return React.DOM.h1({}, 'Hello, ' + this.props.name.deref() + '!');
+  }
+});
+
+function render () {
+  React.render(<Hello name={data.cursor('name')} />, el);
+}
+
+render();
+
+data.on('swap', () => render());
+
+setTimeout(function () {
+  data.cursor('name').update(function () {
+    return 'Hank Pym'
+  });
+}, 2000);
+```
+
+---
+
+# counter
+
+```js
 var Counter  = React.createClass({
 
   render: function () {
@@ -858,10 +946,37 @@ data.on('swap', function () {
 render();
 ```
 
-- implement a clock with its own immstruct data structure
+---
 
-- Is that smart? Rerender all the things??
+# clock
+
+```js
+var data = immstruct({ time: new Date() });
+
+var Clock = React.createClass({
+  render: function () {
+    var time = this.props.time.deref().toString()
+    return <span>{time}</span>;
+  }
+});
+
+function render() {
+  React.render(<Clock time={data.cursor('time')} />, el);
+}
+
+data.on('swap', () => render());
+
+setInterval(function () {
+  data.cursor('time').update(_ => new Date())
+}, 1000);
+```
+
+???
+
+- Alright! Rerender all the things?
+- Is that smart?
 - React is clever, and super fast
+- But we have unnescessary updates, where data does not change - we re-render everything all the time
 - But can we do even better!
 
 ---
@@ -980,6 +1095,8 @@ Assignments:
 Extras:
  - Remote data?
 
+# TODO cursor contrib i playground
+
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
@@ -988,4 +1105,3 @@ Extras:
     </script>
   </body>
 </html>
-

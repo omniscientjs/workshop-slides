@@ -983,26 +983,71 @@ setInterval(function () {
 
 # React sin shouldComponentUpdate
 
-- A react performance optimization
-- Override the function to tell react when a rerender is not nescessary
-- fortelle en komopnent når den trenger å re-rendre!
-- kan sendes inn som en mixin til en komponent
+## A react performance optimization
+## Override the function to tell react when a rerender is not nescessary
 
-vise hvordan mixins fungerer
-vise signaturen til should component update
-vise hvordan den kan brukes
+???
 
-- is not should component update a perfect fit for immutable datastructures?
-- instead of deep equaling all arguments to check if theyve changed, and we need to re-render
-- vise hvordan man kan simply check references
+- Tell a component when it needs to render
+- Can pass it as a mixin to components
 
-## assignments
+---
 
-- create a component that only renders the first time! and never again on new React.render() calls
+# Mixins
 
-- write your own mixin that only rerenders when your component is passed odd numbers
-
+```js
+React.createClass({
+  mixins: []
+});
 ```
+
+---
+
+# shouldComponentUpdate
+
+```js
+var AlwaysRerender = {
+  shouldComponentUpdate: function () {
+    return true;
+  }
+};
+
+React.createClass({
+  mixins: [AlwaysRerender]
+});
+```
+
+---
+
+# assignments
+
+## create a component that only renders the first time! and never again on new React.render() calls
+
+## write your own mixin that only rerenders when your component is passed odd numbers
+
+---
+
+```js
+var NeverRerender = {
+  shouldComponentUpdate: function () {
+    return false;
+  }
+};
+
+var Boring = React.createClass({
+  mixins: [NeverRerender],
+  render: function () {
+    return <span>{this.props.name}</span>;
+  }
+});
+
+React.render(<Boring name='something' />, el);
+React.render(<Boring name='something else' />, el);
+```
+
+---
+
+```js
 var OnlyShowOddNumbers = {
   shouldComponentUpdate: function (nextProps) {
     return nextProps.number % 2 !== 0;
@@ -1016,24 +1061,32 @@ var OddNumbers = React.createClass({
   }
 });
 
-function render (n) {
-  React.render(OddNumbers({ number: n }), el);
-}
 
-var i = 0;
+var n = 0;
 setInterval(function () {
-  render(i++)
+  React.render(OddNumbers({ number: n++ }), el);
 }, 1000);
 ```
 
-assignment: should component that handles immutable structures
+???
 
-## assignments
+- and you might be thinking: is not should component update a perfect fit for immutable datastructures?
+- instead of deep equaling all arguments to check if theyve changed, and we need to re-render
 
-fint for små komponenter
-hva når datastrukturer blir store
-må alle komponenetene vite om hele strukturen
-kan sende referansene til hvor du finner data - cursors
+---
+
+# assignment
+
+## should component that handles immutable structures
+
+---
+
+# omniscient
+
+
+
+
+
 
 immutable data har vært vanskelig i js, om gjør det
 har kommet flere i det siste, flux gjør det, men mye mer overhead i arkitektur

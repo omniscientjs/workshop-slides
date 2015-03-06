@@ -292,15 +292,14 @@ var Greeting = React.createClass({
   render: function () {
     return (
       <div>
-        {italicH1(this.props.user.name)}
-        <p>Wheres Pandapool?</p>
+        {italicH1(this.props.name)}
+        <p>You got some vibranium?</p>
       </div>
     );
   }
 });
 
-var myProps = { user: { name: 'Wade Wilson' } };
-React.render(<Greeting user={myProps.user} />, document.body);
+React.render(<Greeting name="T'Challa" />, document.body);
 ```
 
 ---
@@ -315,18 +314,76 @@ Do following assignments
 
 ---
 
+# DOM is a Side-Effect
+## Abstract Side-Effects to Edges of Communication Graph
+
+???
+
+We don't want to handle the communication to the DOM our self.
+Firstly, integration tests to the DOM is a pain, it is slow
+and it is a huge state which is built through different
+operations which is easy to loose track off. We can avoid that
+by "refreshing" the view entirly and only showing the latest
+changes to the UI.
+
+
+---
+
 # Virtual DOM
 ## What Allows Us To Write Smart DOM Representations
+
+???
+
+- So the Virtual DOM, which React implements, helps us abstracting the DOM.
+We don't have to handle the DOM our self. Important part however, is
+that the distance between the DOM and the Virtual DOM isn't big. It's not
+like Hibernate and SQL.
 
 ---
 
 # In-memory Representation of the DOM
 ## Only Actually Render When Output Changes
 
+???
+
+- The Virtual DOM works by having a in-memory representation of the DOM
+and on update / refresh it does a fast diff between the new generated virtual
+DOM and the current internal DOM, and it only updates to the actual DOM the thing
+that is changed.
+
 ---
 
-# DOM is a Side-Effect
-## Abstract Side-Effects to Leafs
+# Re-render For Every Change
+
+???
+
+- A normal React pattern is just to refresh the views every time.
+So re-render the views with new input and cause different output.
+As mentioned; the output is diffed against the in-memory DOM.
+
+---
+
+```js
+var Name = React.createClass({
+  render: function () {
+    return <h1>{this.props.name}</h1>;
+  }
+});
+
+React.render(<Greeting name="Janet van Dyne" />, document.body);
+
+// No actual DOM operations:
+React.render(<Greeting name="Janet van Dyne" />, document.body);
+React.render(<Greeting name="Janet van Dyne" />, document.body);
+
+// Will change
+React.render(<Greeting name="Wasp" />, document.body);
+```
+
+---
+
+# Heads Up: Might Create Increased Work For the GC
+## Can create a lot of objects that should be thrown away by the GC
 
 ---
 

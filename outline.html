@@ -508,7 +508,7 @@ it('maps episodes => name', function () {
 - keep their result
 
 - operate on lists
-- what programming is about, munging data, transforming data from one representation to another
+- what programming is about, chrunching data, transforming data from one representation to another
 
 - interesting properties: pure functions, no side effects, immutable structures
 - why pure/immutable? others cannot change what is your starting point/basis
@@ -519,20 +519,7 @@ it('maps episodes => name', function () {
 
 ## write a recursive function that sums the numbers of a list
 
----
-
-# sum
-
-```js
-it('should sum numbers', function () {
- sum([1, 2, 3, 4], 0).should.equal(10);
-});
-
-function sum (list, acc) {
-   if (!list.length) return acc;
-   return sum(list.slice(1), acc + list[0])
-}
-```
+???
 
 - While some operations e.g. map, filter, reduce return new lists, the content of these lists may well be references to objects you started out with
 - need to be aware
@@ -654,10 +641,13 @@ list // [1, 2, 3, 4]
 # immutable.js
 
 ## facebook
+
 ## immutable data strcutures for js
+
 ## idiomatic javascript api
 
 ???
+
 - smart, nerdy guy at facebook, lee byron
 - immutable structures for js
 
@@ -796,9 +786,9 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ## range - create a list with 100 items
 
-## map - map over the numbers to double every number
+## map - map over the numbers to triple every number
 
-## filter - filter out every odd numbers
+## filter - filter out/removes every odd number
 
 ## reduce - reduce the numbers to find their sum
 
@@ -814,77 +804,6 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 var add = function (a, b) { return a + b };
 var addCurried = curry(add);
 addCurried(2)(6); // 8
-```
-
----
-
-# curry
-
-```js
-curry = function (fn) {
-  var numargs = fn.length;
-  return createRecurser([]);
-
-  function createRecurser (acc) {
-    return function () {
-      var args = [].slice.call(arguments);
-      return recurse(acc, args);
-    };
-  }
-
-  function recurse (acc, args) {
-    var newacc = acc.concat(args);
-    if (newacc.length < numargs) {
-      return createRecurser(newacc);
-    }
-    else {
-      return fn.apply(this, newacc);
-    }
-  }
-}
-```
-
----
-
-# curry 2
-
-```js
-var add = curry(function (a, b, c) {
-  return a + b + c;
-});
-
-var add2 = add(2);
-var add4 = add2(2);
-console.log(add(2)(2)(2)); // 6
-console.log(add2(2)(3)); // 7
-console.log(add2(2)(4)); // 8
-console.log(add4(5)); // 9
-
-console.log(add(1, 2, 3)); // 6
-console.log(add(1)(2, 3)); // 6
-console.log(add(1, 2)(3)); // 6
-console.log(add(1)(2)(3)); // 6
-```
-
----
-
-# curry 3
-
-```js
-var times = curry(function (a, b, c) {
-  return a * b * c;
-});
-
-var times2 = times(2);
-var times4 = times2(2);
-console.log(times(2)(2)(2)); // 8
-console.log(times2(2)(3)); // 12
-console.log(times4(4)); // 16
-
-console.log(times(2, 3, 4)); // 24
-console.log(times(2)(3, 4)); // 24
-console.log(times(2, 3)(4)); // 24
-console.log(times(2)(3)(4)); // 24
 ```
 
 ---
@@ -1026,93 +945,6 @@ data.cursor('something').update(function (oldValue) {
 
 ## create a `Clock` component that re-renders every time the clock updates
 
----
-
-# Hello
-
-```js
-var data = immstruct({ name: 'World!' });
-
-var Hello = React.createClass({
-  render: function () {
-    return React.DOM.h1({}, 'Hello, ' + this.props.name.deref() + '!');
-  }
-});
-
-function render () {
-  React.render(<Hello name={data.cursor('name')} />, el);
-}
-
-render();
-
-data.on('swap', () => render());
-
-setTimeout(function () {
-  data.cursor('name').update(function () {
-    return 'Hank Pym'
-  });
-}, 2000);
-```
-
----
-
-# counter
-
-```js
-var Counter  = React.createClass({
-
-  render: function () {
-
-    var counter = this.props.counter;
-    var inc = function (e) {
-      counter.update(function (v) {
-        return v + 1;
-      });
-    }
-
-    return <button onClick={inc}>{counter.deref()}</button>;
-  }
-});
-
-
-var data = immstruct({ counter: 0 });
-
-var render = function () {
-  React.render(<Counter counter={data.cursor('counter')} />, el);
-};
-
-data.on('swap', function () {
-  render();
-});
-
-render();
-```
-
----
-
-# clock
-
-```js
-var data = immstruct({ time: new Date() });
-
-var Clock = React.createClass({
-  render: function () {
-    var time = this.props.time.deref().toString()
-    return <span>{time}</span>;
-  }
-});
-
-function render() {
-  React.render(<Clock time={data.cursor('time')} />, el);
-}
-
-data.on('swap', () => render());
-
-setInterval(function () {
-  data.cursor('time').update(_ => new Date())
-}, 1000);
-```
-
 ???
 
 - Alright! Rerender all the things?
@@ -1166,49 +998,6 @@ React.createClass({
 ## create a component that only renders the first time! and never again on new React.render() calls
 
 ## write your own mixin that only rerenders when your component is passed odd numbers
-
----
-
-```js
-var NeverRerender = {
-  shouldComponentUpdate: function () {
-    return false;
-  }
-};
-
-var Boring = React.createClass({
-  mixins: [NeverRerender],
-  render: function () {
-    return <span>{this.props.name}</span>;
-  }
-});
-
-React.render(<Boring name='something' />, el);
-React.render(<Boring name='something else' />, el);
-```
-
----
-
-```js
-var OnlyShowOddNumbers = {
-  shouldComponentUpdate: function (nextProps) {
-    return nextProps.number % 2 !== 0;
-  }
-};
-
-var OddNumbers = React.createClass({
-  mixins: [OnlyShowOddNumbers],
-  render: function () {
-    return <span>{this.props.number}</span>;
-  }
-});
-
-
-var n = 0;
-setInterval(function () {
-  React.render(OddNumbers({ number: n++ }), el);
-}, 1000);
-```
 
 ???
 

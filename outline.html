@@ -263,10 +263,12 @@ var Hello = React.createClass({
 
 var Greeting = React.createClass({
   render: function () {
-    return (<div>
+    return (
+      <div>
         <Hello><em>{this.props.user.name}</em></Hello>
         <p>Wheres Pandapool?</p>
-      </div>);
+      </div>
+    );
   }
 });
 
@@ -277,7 +279,7 @@ React.render(<Greeting user={myProps.user} />, document.body);
 ---
 
 # Functional Patterns for UI
-
+## __(more info on this later)__
 ---
 
 ```jsx
@@ -287,10 +289,13 @@ var compose = (a, b) => (input => a(b(input)));
 var italicH1 = compose(h1, em);
 
 var Greeting = React.createClass({
-  render: function () { return (<div>
+  render: function () {
+    return (
+      <div>
         {italicH1(this.props.user.name)}
         <p>Wheres Pandapool?</p>
-      </div>);
+      </div>
+    );
   }
 });
 
@@ -300,16 +305,30 @@ React.render(<Greeting user={myProps.user} />, document.body);
 
 ---
 
-
 Workshop Tasks: http://omniscientjs.github.io/workshop
 
 Do following assignments
 - Part 1: Composing Simple Components
 - Part 1: Composing Components Through Children
+- Part 1: Composing Many Children
+- Part 1: Composing Through Small Functions
 
 ---
 
-# virtual DOM
+# Virtual DOM
+## What Allows Us To Write Smart DOM Representations
+
+---
+
+# In-memory Representation of the DOM
+## Only Actually Render When Output Changes
+
+---
+
+# DOM is a Side-Effect
+## Abstract Side-Effects to Leafs
+
+---
 
 ## Assignments
 

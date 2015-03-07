@@ -24,6 +24,12 @@ class: center, middle
 
 ---
 
+## [Slides](http://omniscient.github.io/omniscient-workshop/)
+
+## [Playground](http://omniscientjs.github.io/workshop/)
+
+---
+
 # The Beginning
 ## Static HTML, No JS
 
@@ -146,7 +152,7 @@ var Hello = React.createClass({
 var myProps = { user: { name: 'Hank Pym' } };
 React.render(React.createElement(Hello, myProps), document.body);
 
-// Render again:
+// Render again
 myProps.user.name = 'Scott Lang';
 React.render(React.createElement(Hello, myProps), document.body);
 ```
@@ -164,7 +170,8 @@ React.render(
   <h1>Hello, world!</h1>,
   document.body);
 
-//=> Translated to
+// Translates to
+
 React.render(
   React.createElement('h1', {}, 'Hello, world!'),
   document.body);
@@ -185,7 +192,6 @@ var Hello = React.createClass({
   }
 });
 
-// Need to create element from class
 var myProps = { user: { name: 'Hank Pym' } };
 React.render(<Hello user={myProps.user) />, document.body);
 ```
@@ -249,7 +255,7 @@ var Greeting = React.createClass({
 });
 
 var myProps = { user: { name: 'Wade Wilson' } };
-React.render(<Greeting user={myProps.user) />, document.body);
+React.render(<Greeting user={myProps.user} />, document.body);
 ```
 
 ---
@@ -311,7 +317,7 @@ Do following assignments
 - Part 1: Composing Components Through Children
 - Part 1: Composing Many Children
 - Part 1: Composing Through Small Functions
-- Part 1: Some Advanced Task
+- TODO Part 1: Some Advanced Task
 
 ---
 
@@ -420,14 +426,16 @@ Setup:
 ???
 
 - why strive for principles of functional programming?
+
+- in general we believe it makes reasoning about you programs easier
+- we also believe its helful for reasoning about your views
+
 - easier mental model
 - easier to write
 - modular programs
 - decompose problems into parts
 
-???
-
-- in terms of functional views, as a result, when you find a bug, just dig into the component and _know_ that this is where all
+- useful in terms of composability, especially when it comes to your views, which well see later
 
 ---
 
@@ -451,7 +459,7 @@ var z = x + y; // var z = 3;
 
 ???
 
-- Property of parts of computer programs.
+- two properties of parts of computer programs.
 
 - Given the same input, the program has the same effects and outputs
 - write code that functions that have predictable output, given some input
@@ -459,7 +467,6 @@ var z = x + y; // var z = 3;
 - makes code easier to test
 
 - For programs to be interesting we actually need state and side effects!
-- TODO remove? Common examples include the dom, ajax communcation, logging etc.
 
 ---
 
@@ -607,20 +614,27 @@ it('maps episodes => name', function () {
 
 # Immutable data
 
+???
+
+- another important aspect of functional programming
+- also makes things easier to reason about
+- essentially means when someone changes data, theyre given a copy
+- don't have to worry about others changing your data
+
+- not everything is immutable in js
+- easy to loose track of modifications
+- what can we do about it?
+
 ---
 
 # Object.freeze(someObject);
 
 ???
 
-- not everything is immutable in js
-- easy to loose track of modifications
-- what can we do about it?
-
 - Object.freeze() makes it immutable
 - "Can't add property <property>, object is not extensible""
 - not efficient
-- cant update an without copying all values to a new object
+- cant update an object without copying all values to a new object
 
 - how can we copy it?
 - can we copy everything all the time?
@@ -687,15 +701,15 @@ list // [1, 2, 3]
 ```js
 var list = [1, 2, 3]
 
-list.push(4) // 4
+list.push(42) // 4
 
-list // [1, 2, 3, 4]
+list // [1, 2, 3, 42]
 ```
 
 ???
 
 - push, mutating => why?
-- you push 4, you get 4 back - yes, i know already, thanks
+- you push 42, you get 4 back, you get the length back?
 
 ---
 
@@ -921,12 +935,12 @@ var updatedEpisode = episodes.update([2, 'name'], function (previousName) {
 
 ???
 
-- can also listen for when the data of a cursor changes
 - isolate actions agains separate parts of a structure in an application
 - pass a reference on to others
 - is much like a view of the data
 
 - in terms of components; this is useful with react components - a component "owns" a piece of state
+- can also listen for when the data of a cursor changes
 - which we'll see in a bit, but first some assignments
 
 ---
@@ -1008,11 +1022,6 @@ data.cursor('something').update(function (oldValue) {
 - isnt that a perfect fit with react - refreshes the view when you rerender
 - you can rerender the whole thing
 
-# TODO where?
-- react is not a silver bullet
-- atom had to move away from it
-- to fragmented painting, to much gc on changes
-
 ---
 
 # assignments
@@ -1029,6 +1038,11 @@ data.cursor('something').update(function (oldValue) {
 - Is that smart?
 - React is clever, and super fast
 - But we have unnescessary updates, where data does not change - we re-render everything all the time
+
+- react is not a silver bullet
+- atom had to move away from it
+- to fragmented painting, to much gc on changes
+
 - But can we do even better!
 
 ---
@@ -1095,7 +1109,7 @@ React.createClass({
 
 ???
 
-Omniscient isn't more than the principals which we have covered so far. You can use React in a way that is not referentially transparent, and pure components, and Omniscient is a really small library built on top of Omniscient which encourages functional principals to React.
+Omniscient isn't more than the principles which we have covered so far. You can use React in a way that is not referentially transparent, and pure components, and Omniscient is a really small library built on top of Omniscient which encourages functional principals to React.
 
 ---
 
@@ -1220,7 +1234,7 @@ React.render(Greeting({ name: 'Angela' }), el);
 var component = require('omniscient');
 
 var i = 0;
-var Greeting = component(function ({name}){
+var Greeting = component(function ({name}) {
   i++;
   return <h1>Hello, {name}!</h1>;
 });
@@ -1241,11 +1255,11 @@ console.log(i);
 ```js
 var component = require('omniscient');
 
-var NameBox = component(function ({name}){
+var NameBox = component(function ({name}) {
   return <em>{name}</em>;
 });
 
-var Greeting = component(function (props){
+var Greeting = component(function (props) {
   return <h1>Hello, {NameBox(props)}!</h1>;
 });
 
@@ -1268,11 +1282,11 @@ var component = omniscient.withDefaults({
   jsx: true
 });
 
-var NameBox = component(function ({name}){
+var NameBox = component(function ({name}) {
   return <em>{name}</em>;
 });
 
-var Greeting = component(function (props){
+var Greeting = component(function (props) {
   return <h1>Hello, <NameBox name={props} />!</h1>;
 });
 
@@ -1287,11 +1301,11 @@ var component = omniscient.withDefaults({
   jsx: true
 });
 
-var NameBox = component(function ({children}){
+var NameBox = component(function ({children}) {
   return <em>{children}</em>;
 });
 
-var Greeting = component(function ({name}){
+var Greeting = component(function ({name}) {
   return <h1>Hello, <NameBox>{name}</NameBox>!</h1>;
 });
 
@@ -1362,12 +1376,12 @@ React.render(Greeting({ name: 'Natalia Romanova' }), el);
 ```js
 var mixins = {
   componentDidMount: function () {
-    var element = React.findDOMNode(this);
+    var element = this.getDOMNode();
     // do something with element
   }
 };
 
-var Greeting = component(mixins, function ({name}){
+var Greeting = component(mixins, function ({name}) {
   return <h1>Hello, {name}!</h1>;
 });
 
@@ -1385,7 +1399,7 @@ var mixins = {
   }
 };
 
-var Greeting = component(mixins, function (props){
+var Greeting = component(mixins, function (props) {
   return <h1 onClick={this.onClick}>Hello, {props.name}!</h1>;
 });
 
@@ -1403,7 +1417,7 @@ function onClick (props) {
   };
 }
 
-var Greeting = component(function (props){
+var Greeting = component(function (props) {
   return <h1 onClick={onClick(props)}>Hello, {props.name}!</h1>;
 });
 
@@ -1424,6 +1438,29 @@ React.render(Greeting({ name: 'Natalia Romanova' }), el);
 
 # Typical Omniscient Flow
 ## The Render Loop of Omniscient + Immstruct
+
+```js
+var Count = component(({counter}) =>
+  <div>
+    <span>Count {counter.deref()}! </span>
+    <button onClick={() => counter.update(n => n + 1)}>inc</button>
+    <button onClick={() => counter.update(n => n - 1)}>dec</button>
+  </div>);
+
+var data = immstruct({ counter: 42 });
+data.on('swap', render);
+render();
+
+function render () {
+  React.render(
+    Count({ counter: data.cursor('counter') }),
+    el);
+}
+
+setInterval(
+  () => data.cursor('counter').update(i => i + 1),
+  2000);
+```
 
 ---
 
@@ -1452,9 +1489,6 @@ mindre battle tested løsning
 
 kan bruke state - i blant trenger man det - selvfølgelig er det mulig
 
-## assignments
-- react with omniscients should component update
-
 endrer fokusområdet til content first
 alt en komponent trenger å være er innhold
 composability av innhold
@@ -1466,12 +1500,6 @@ higher order components - komponenter tar inn komponenter, returnerer andre komp
 isteden for funksjonell programmering på funksjonsnivå
 har funksjonell programmering på komponentnivå
 
-## assignments
-- pass props
-- pass cursors
-- effective re-render
-- render loop
-
 av og til trenger man ekstra funksjonalitet
 lagt opp til at den er enkel på å dele via mixins (traits)
 legge funksjonene utenfor komponentene
@@ -1481,14 +1509,6 @@ legge funksjonene utenfor komponentene
 - legge til én mixin
 - legge til flere mixins
 - legge til react life cycle mixins (alle er garantert til å bli utført, hvis det finnes flere)
-
-Assignments:
- - Creating updatable omniscient components (render loop)
-
-Extras:
- - Remote data?
-
-# TODO cursor contrib i playground
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">

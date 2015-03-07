@@ -1090,12 +1090,226 @@ React.createClass({
 
 ---
 
-# omniscient
+# Omniscient.js
+## React + Immutable + Syntactic Sugar
 
+???
 
+Omniscient isn't more than the principals which we have covered so far. You can use React in a way that is not referentially transparent, and pure components, and Omniscient is a really small library built on top of Omniscient which encourages functional principals to React.
 
+---
 
+# A Default `shouldComponentUpdate`
+## Smart Implementation That Checks For Immutable Data and Cursors
 
+???
+
+Omniscients comes with a default implementation of `shouldComponentUpdate` which is smart and checks for cursors and immutable data structures. The `shouldComponentUpdate` is designed to do as little work as possible and exits early, doing minimal work when one uses immutable data or cursors.
+
+---
+
+# Accessible `shouldComponentUpdate`
+## For Just Using React with Immutable Data
+
+---
+
+```js
+var data = immstruct({ something: 'initial' });
+
+var shouldUpdateMixin = {
+  shouldComponentUpdate: require('omniscient/shouldupdate')
+};
+
+var ImmutableComponent = React.createClass({
+  mixins: [shouldUpdateMixin],
+  render: function () {
+    return <h1>{this.props.cursor}</h1>;
+  }
+});
+
+React.render(<ImmutableComponent cursor={data.cursor()} />, document.body);
+
+// Won't re-render
+React.render(<ImmutableComponent cursor={data.cursor()} />, document.body);
+```
+
+---
+
+```js
+// Alternative way to access the mixin
+var omniscient = require('omniscient');
+
+var shouldUpdateMixin = {
+  shouldComponentUpdate: omniscient.shouldComponentUpdate
+};
+
+var ImmutableComponent = React.createClass({
+  mixins: [shouldUpdateMixin],
+  render: function () {
+    return <h1>{this.props.cursor}</h1>;
+  }
+});
+```
+
+---
+
+# Debugging `shouldComponentUpdate`
+
+```js
+var omniscient = require('omniscient');
+
+// Activate debugging
+omniscient.shouldComponentUpdate.debug();
+
+var shouldUpdateMixin = {
+  shouldComponentUpdate: omniscient.shouldComponentUpdate
+};
+
+// ...
+```
+
+???
+
+Sometimes you want to know why your components re-render or if it re-renders or not. You can
+use `shouldComponentUpdate`'s `.debug()` function. This will activate log statements for
+every `shouldComponentUpdate` result and for which component it is regarding.
+
+---
+
+# Assignments
+
+1. Using Omniscient's `shouldComponentUpdate` in React
+2. Not re-rendering when the cursors are the same.
+3. `shouldComponentUpdate` debugger
+4. Advanced Task: Extending the provided `shouldComponentUpdate`
+
+---
+
+# Referentially Transparent Components
+## Syntactic Suger for Functional UIs
+
+---
+
+```js
+var component = require('omniscient');
+var h1 = React.DOM.h1;
+
+var Greeting = component(function (props) {
+  return h1({}, 'Hello, ' + props.name)
+});
+
+React.render(Greeting({ name: 'Peter Quill' }), el);
+```
+
+---
+
+# Combining with ES2015 (ES6) and JSX
+
+```js
+var component = require('omniscient');
+var Greeting = component(({name}) => <h1>Hello, {name}!</h1>);
+
+React.render(Greeting({ name: 'Angela' }), el);
+```
+
+---
+
+# Always With Immutable `shouldComponentUpdate`
+
+```js
+var component = require('omniscient');
+
+var i = 0;
+var Greeting = component(function ({name}){
+  i++;
+  return <h1>Hello, {name}!</h1>;
+});
+
+React.render(Greeting({ name: 'Starlord' }), el);
+
+// Won't do re-render
+React.render(Greeting({ name: 'Starlord' }), el);
+
+console.log(i);
+//=> i === 1
+```
+
+---
+
+# Composing Multiple Functional Components
+
+```js
+var component = require('omniscient');
+
+var NameBox = component(function ({name}){
+  return <em>{name}</em>;
+});
+
+var Greeting = component(function (props){
+  return <h1>Hello, {NameBox(props)}!</h1>;
+});
+
+React.render(Greeting({ name: 'Starlord' }), el);
+```
+
+???
+
+Here we also see the interobability with Omniscient and JSX.
+
+---
+
+# Omniscient with JSX
+
+```js
+var omniscient = require('omniscient');
+
+// Activate "always JSX" for Omniscient
+var component = omniscient.withDefaults({
+  jsx: true
+});
+
+var NameBox = component(function ({name}){
+  return <em>{name}</em>;
+});
+
+var Greeting = component(function (props){
+  return <h1>Hello, <NameBox name={props} />!</h1>;
+});
+
+React.render(Greeting({ name: 'Starlord' }), el);
+```
+
+---
+
+```js
+// Activate "always JSX" for Omniscient
+var component = omniscient.withDefaults({
+  jsx: true
+});
+
+var NameBox = component(function ({children}){
+  return <em>{children}</em>;
+});
+
+var Greeting = component(function ({name}){
+  return <h1>Hello, <NameBox>{name}</NameBox>!</h1>;
+});
+
+React.render(Greeting({ name: 'Starlord' }), el);
+```
+
+---
+
+# Assignments
+
+1. Hello Omniscient!
+2. Using Omniscient with JSX
+3. Composing Omniscient Components
+3. Composing Omniscient Components Through Children
+4. Re-rendering Omniscient Components
+5. Advanced: Implement List Of Omniscient Items
+
+---
 
 immutable data har vært vanskelig i js, om gjør det
 har kommet flere i det siste, flux gjør det, men mye mer overhead i arkitektur

@@ -1186,7 +1186,7 @@ every `shouldComponentUpdate` result and for which component it is regarding.
 ---
 
 # Referentially Transparent Components
-## Syntactic Suger for Functional UIs
+## Syntactic Suger for Functional UIs And Content First Focus
 
 ---
 
@@ -1308,6 +1308,117 @@ React.render(Greeting({ name: 'Starlord' }), el);
 3. Composing Omniscient Components Through Children
 4. Re-rendering Omniscient Components
 5. Advanced: Implement List Of Omniscient Items
+
+---
+
+# Customizing Omniscient Globally
+
+```js
+
+var AlwaysRerender = function () {
+  return true;
+};
+
+// Override shouldComponentUpdate default
+var component = omniscient.withDefaults({
+  shouldComponentUpdate: AlwaysRerender
+});
+
+var Greeting = component(function ({name}){
+  return <h1>Hello, {name}!</h1>;
+});
+
+React.render(Greeting({ name: 'Clinton Barton' }), el);
+
+// Will re-render
+React.render(Greeting({ name: 'Clinton Barton' }), el);
+```
+
+---
+
+# Customizing Omniscient Through Mixins
+
+```js
+var AlwaysRerender = {
+  shouldComponentUpdate: function () {
+    return true;
+  }
+};
+
+var Greeting = component(AlwaysRerender, function ({name}){
+  return <h1>Hello, {name}!</h1>;
+});
+
+React.render(Greeting({ name: 'Natalia Romanova' }), el);
+
+// Will re-render
+React.render(Greeting({ name: 'Natalia Romanova' }), el);
+```
+
+---
+
+# Also For React Life Cycle Methods
+
+```js
+var mixins = {
+  componentDidMount: function () {
+    var element = React.findDOMNode(this);
+    // do something with element
+  }
+};
+
+var Greeting = component(mixins, function ({name}){
+  return <h1>Hello, {name}!</h1>;
+});
+
+React.render(Greeting({ name: 'Natalia Romanova' }), el);
+```
+
+---
+
+# Accessible Mixins Through Render Function
+
+```js
+var mixins = {
+  onClick: function (event) {
+    console.log('Clicked:', this.props.name);
+  }
+};
+
+var Greeting = component(mixins, function (props){
+  return <h1 onClick={this.onClick}>Hello, {props.name}!</h1>;
+});
+
+React.render(Greeting({ name: 'Natalia Romanova' }), el);
+```
+
+---
+
+# Passing Arguments Instead Of Contexts
+
+```js
+function onClick (props) {
+  return function onClickFunction (event) {
+    console.log('Clicked:', props.name);
+  };
+}
+
+var Greeting = component(function (props){
+  return <h1 onClick={onClick(props)}>Hello, {props.name}!</h1>;
+});
+
+React.render(Greeting({ name: 'Natalia Romanova' }), el);
+```
+
+---
+
+## Assignments
+
+- Components With Overriden `shouldComponentUpdate`
+- Components With A Set Of Mixins.
+- Components With Multiple Sets Of Mixins.
+- Adding Life Cycle Mixins
+- Advanced Task: Make Mixin Manager for Prioritized Mixins.
 
 ---
 

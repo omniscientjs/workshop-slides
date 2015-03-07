@@ -7,13 +7,31 @@
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
       @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
       @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      @import url(http://omniscientjs.github.io/css/vendor/base16-mocha-dark.css);
 
-      body { font-family: 'Droid Serif'; }
+      body {
+        font-family: 'Droid Serif';
+        color: white;
+      }
+
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
+        text-align: center;
       }
+
+      a,
+      a:visited,
+      a:hover {
+        color: white;
+        text-decoration: none;
+      }
+
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+      .remark-slide-content {
+        background: linear-gradient(to bottom, #2980B9 0%, #3e5771 100%);
+      }
     </style>
   </head>
   <body>
@@ -185,7 +203,7 @@ JSX is a transpile-to-JS language, with a very small transpilation distance.
 
 ---
 
-```jsx
+```js
 var Hello = React.createClass({
   render: function () {
     return <h1>Hello, {this.props.user.name}!</h1>;
@@ -202,11 +220,10 @@ Previous example with JSX.
 
 ##  Assignments: Creating Components
 
-Test out the playground: http://omniscientjs.github.io/workshop
+## Test out the playground: http://omniscientjs.github.io/workshop
 
-Do following assignments
-- Part 1: Making Basic Components
-- Part 1: Passing Properties
+## Part 1: Making Basic Components
+## Part 1: Passing Properties
 
 ---
 
@@ -218,7 +235,7 @@ Just rendering a HTML document isn't much of an application, and we could just u
 HTML if we weren't making a more complex application. We need to combine different
 components for making larger structures.
 
-```jsx
+```js
 var Greeting = React.createClass({
   render: function () {
     return (
@@ -236,7 +253,7 @@ React.render(<Greeting user={myProps.user) />, document.body);
 
 ---
 
-```jsx
+```js
 var Hello = React.createClass({
   render: function () {
     return <h1>Hello, {this.props.username}!</h1>;
@@ -260,7 +277,7 @@ React.render(<Greeting user={myProps.user} />, document.body);
 
 ---
 
-```jsx
+```js
 var Hello = React.createClass({
   render: function () {
     return <h1>Hello, {this.props.children}!</h1>;
@@ -288,7 +305,7 @@ React.render(<Greeting user={myProps.user} />, document.body);
 ## __(more info on this later)__
 ---
 
-```jsx
+```js
 var h1 = input => <h1>{input}</h1>;
 var em = input => <em>{input}</em>;
 var compose = (a, b) => (input => a(b(input)));
@@ -310,14 +327,11 @@ React.render(<Greeting name="T'Challa" />, document.body);
 
 ---
 
-Workshop Tasks: http://omniscientjs.github.io/workshop
-
-Do following assignments
-- Part 1: Composing Simple Components
-- Part 1: Composing Components Through Children
-- Part 1: Composing Many Children
-- Part 1: Composing Through Small Functions
-- TODO Part 1: Some Advanced Task
+## Part 1: Composing Simple Components
+## Part 1: Composing Components Through Children
+## Part 1: Composing Many Children
+## Part 1: Composing Through Small Functions
+## TODO Part 1: Some Advanced Task
 
 ---
 
@@ -396,10 +410,10 @@ React.render(<Greeting name="Wasp" />, document.body);
 
 ## Assignments
 
- - Render two times and see that only the second will be visible.
- - Render twice to update view using setTimeout.
- - Render a clock using setInterval
- - Advanced: Create a list of components, and re-render the tree.
+## Render two times and see that only the second will be visible.
+## Render twice to update view using setTimeout.
+## Render a clock using setInterval
+## Advanced: Create a list of components, and re-render the tree.
 
 ---
 
@@ -644,7 +658,7 @@ it('maps episodes => name', function () {
 
 # clojure
 
-```js
+```clj
 (def user {:firstname "torgeir"})
 (def modified-user (assoc user :lastname "thoresen"))
 (= user modified-user) // false
@@ -713,13 +727,11 @@ list // [1, 2, 3, 42]
 
 ---
 
-# immutable data
+# immutable data alternatives for js
 
-## alternatives for js
-
-- [ki](http://ki-lang.org)
-- [mori](https://github.com/swannodette/mori)
-- [clojurescript](http://clojure.org/clojurescript)
+## [ki](http://ki-lang.org)
+## [mori](https://github.com/swannodette/mori)
+## [clojurescript](http://clojure.org/clojurescript)
 
 ???
 
@@ -1192,10 +1204,10 @@ every `shouldComponentUpdate` result and for which component it is regarding.
 
 # Assignments
 
-1. Using Omniscient's `shouldComponentUpdate` in React
-2. Not re-rendering when the cursors are the same.
-3. `shouldComponentUpdate` debugger
-4. Advanced Task: Extending the provided `shouldComponentUpdate`
+## Using Omniscient's `shouldComponentUpdate` in React
+## Not re-rendering when the cursors are the same.
+## `shouldComponentUpdate` debugger
+## Advanced Task: Extending the provided `shouldComponentUpdate`
 
 ---
 
@@ -1316,12 +1328,12 @@ React.render(Greeting({ name: 'Starlord' }), el);
 
 # Assignments
 
-1. Hello Omniscient!
-2. Using Omniscient with JSX
-3. Composing Omniscient Components
-3. Composing Omniscient Components Through Children
-4. Re-rendering Omniscient Components
-5. Advanced: Implement List Of Omniscient Items
+## Hello Omniscient!
+## Using Omniscient with JSX
+## Composing Omniscient Components
+## Composing Omniscient Components Through Children
+## Re-rendering Omniscient Components
+## Advanced: Implement List Of Omniscient Items
 
 ---
 
@@ -1428,11 +1440,11 @@ React.render(Greeting({ name: 'Natalia Romanova' }), el);
 
 ## Assignments
 
-- Components With Overriden `shouldComponentUpdate`
-- Components With A Set Of Mixins.
-- Components With Multiple Sets Of Mixins.
-- Adding Life Cycle Mixins
-- Advanced Task: Make Mixin Manager for Prioritized Mixins.
+## Components With Overriden `shouldComponentUpdate`
+## Components With A Set Of Mixins.
+## Components With Multiple Sets Of Mixins.
+## Adding Life Cycle Mixins
+## Advanced Task: Make Mixin Manager for Prioritized Mixins.
 
 ---
 
@@ -1514,7 +1526,7 @@ legge funksjonene utenfor komponentene
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
     <script>
-      var slideshow = remark.create();
+      var slideshow = remark.create({ highlightStyle: 'base16-mocha-dark' });
     </script>
   </body>
 </html>

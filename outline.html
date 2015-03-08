@@ -17,7 +17,6 @@
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
-        text-align: center;
       }
 
       a,
@@ -113,6 +112,8 @@ Built for changes over time, and between each change it essentially does a refre
 
 ---
 
+# React.js
+
 ```js
 React.render(
   React.DOM.h1({}, 'Hello, world!'),
@@ -125,6 +126,8 @@ React.render(
 Many, or most, of you might have seen React before, but here is an example, in plain old JS.
 
 ---
+
+# Custom components
 
 ```js
 var Hello = React.createClass({
@@ -147,6 +150,8 @@ could also use module patterns or ES3 classes.
 
 ---
 
+# Passing props
+
 ```js
 var Hello = React.createClass({
   render: function () {
@@ -154,36 +159,16 @@ var Hello = React.createClass({
   }
 });
 
-// Need to create element from class
 var myProps = { user: { name: 'Hank Pym' } };
-React.render(React.createElement(Hello, myProps), document.body);
+
+// Need to create element from class
+var element = React.createElement(Hello, myProps);
+React.render(element, document.body);
 ```
 
 ???
 
 We can also pass properties to the components. Much like attributes and children of regular HTML, but instead of being restricted to a protocol of only strings, we can pass objects and more advanced constructs.
-
----
-
-```js
-var Hello = React.createClass({
-  render: function () {
-    return React.DOM.h1({}, 'Hello, ' + this.props.user.name + '!');
-  }
-});
-
-// Need to create element from class
-var myProps = { user: { name: 'Hank Pym' } };
-React.render(React.createElement(Hello, myProps), document.body);
-
-// Render again
-myProps.user.name = 'Scott Lang';
-React.render(React.createElement(Hello, myProps), document.body);
-```
-
-???
-
-This will update the view, diff against the virtual dom and render the change. We see here a really static mental model. We can see that we, depending on the input, will print "Hello, SOME NAME!".
 
 ---
 
@@ -209,6 +194,8 @@ JSX is a transpile-to-JS language, with a very small transpilation distance.
 
 ---
 
+# Previous example with JSX
+
 ```js
 var Hello = React.createClass({
   render: function () {
@@ -220,26 +207,20 @@ var myProps = { user: { name: 'Hank Pym' } };
 React.render(<Hello user={myProps.user} />, document.body);
 ```
 
-Previous example with JSX.
-
 ---
 
-##  Assignments: Creating Components
+##  Part 1 Assignments: Creating Components
 
-## Test out the playground: http://omniscientjs.github.io/workshop
+## Test out [the playground](http://omniscientjs.github.io/workshop)
 
-## Part 1: Making Basic Components
-## Part 1: Passing Properties
+## Making Basic Components
 
+## Passing Properties
+
+## TODO advanced: uppercase the name of the user
 ---
 
 # Composability Through Components
-
-???
-
-Just rendering a HTML document isn't much of an application, and we could just use
-HTML if we weren't making a more complex application. We need to combine different
-components for making larger structures.
 
 ```js
 var Greeting = React.createClass({
@@ -257,7 +238,15 @@ var myProps = { user: { name: 'Wade Wilson' } };
 React.render(<Greeting user={myProps.user} />, document.body);
 ```
 
+???
+
+Just rendering a HTML document isn't much of an application, and we could just use
+HTML if we weren't making a more complex application. We need to combine different
+components for making larger structures.
+
 ---
+
+# Multiple components
 
 ```js
 var Hello = React.createClass({
@@ -283,6 +272,8 @@ React.render(<Greeting user={myProps.user} />, document.body);
 
 ---
 
+# Composing with children
+
 ```js
 var Hello = React.createClass({
   render: function () {
@@ -294,7 +285,9 @@ var Greeting = React.createClass({
   render: function () {
     return (
       <div>
-        <Hello><em>{this.props.user.name}</em></Hello>
+        <Hello>
+          <em>{this.props.user.name}</em>
+        </Hello>
         <p>Wheres Pandapool?</p>
       </div>
     );
@@ -308,12 +301,11 @@ React.render(<Greeting user={myProps.user} />, document.body);
 ---
 
 # Functional Patterns for UI
-## __(more info on this later)__
----
 
 ```js
 var h1 = input => <h1>{input}</h1>;
 var em = input => <em>{input}</em>;
+
 var compose = (a, b) => (input => a(b(input)));
 var italicH1 = compose(h1, em);
 
@@ -333,15 +325,18 @@ React.render(<Greeting name="T'Challa" />, document.body);
 
 ---
 
-## Part 1: Composing Simple Components
-## Part 1: Composing Components Through Children
-## Part 1: Composing Many Children
-## Part 1: Composing Through Small Functions
-## TODO Part 1: Some Advanced Task
+# Part 1: Assignments
+
+## Composing Simple Components
+## Composing Components Through Children
+## Composing Many Children
+## Composing Through Small Functions
+## TODO Advanced: Compose two custom components
 
 ---
 
 # DOM is a Side-Effect
+
 ## Abstract Side-Effects to Edges of Communication Graph
 
 ???
@@ -357,6 +352,7 @@ changes to the UI.
 ---
 
 # Virtual DOM
+
 ## What Allows Us To Write Smart DOM Representations
 
 ???
@@ -369,6 +365,7 @@ like Hibernate and SQL.
 ---
 
 # In-memory Representation of the DOM
+
 ## Only Actually Render When Output Changes
 
 ???
@@ -382,14 +379,6 @@ that is changed.
 
 # Re-render For Every Change
 
-???
-
-- A normal React pattern is just to refresh the views every time.
-So re-render the views with new input and cause different output.
-As mentioned; the output is diffed against the in-memory DOM.
-
----
-
 ```js
 var Name = React.createClass({
   render: function () {
@@ -399,7 +388,7 @@ var Name = React.createClass({
 
 React.render(<Greeting name="Janet van Dyne" />, document.body);
 
-// No actual DOM operations:
+// No actual DOM operations!
 React.render(<Greeting name="Janet van Dyne" />, document.body);
 React.render(<Greeting name="Janet van Dyne" />, document.body);
 
@@ -407,21 +396,34 @@ React.render(<Greeting name="Janet van Dyne" />, document.body);
 React.render(<Greeting name="Wasp" />, document.body);
 ```
 
+???
+
+- A normal React pattern is just to refresh the views every time.
+So re-render the views with new input and cause different output.
+As mentioned; the output is diffed against the in-memory DOM.
+
 ---
 
-# Heads Up: Might Create Increased Work For the GC
+# Heads Up!
+
+## Might Create Increased Work For the GC
+
 ## Can create a lot of objects that should be thrown away by the GC
 
----
+???
 
-## Assignments
-
-## Render two times and see that only the second will be visible.
-## Render twice to update view using setTimeout.
-## Render a clock using setInterval
-## Advanced: Create a list of components, and re-render the tree.
+- react is not a silver bullet
+- atom had to move away from it
+- to fragmented painting, to much gc on changes
 
 ---
+
+## Part 1: Assignments
+
+## TODO Render two times and see that only the second will be visible.
+## TODO Render twice to update view using setTimeout.
+## TODO Render a clock using setInterval
+## TODO Advanced: Create a list of components, and re-render the tree.
 
 ???
 
@@ -439,9 +441,9 @@ Setup:
 
 ---
 
-# functional paradigm
+# Functional paradigm
 
-## the mental model
+## The mental model
 
 ???
 
@@ -451,23 +453,40 @@ Setup:
 - we also believe its helful for reasoning about your views
 
 - easier mental model
-- easier to write
 - modular programs
+- easier to write
+- easier to test
 - decompose problems into parts
 
 - useful in terms of composability, especially when it comes to your views, which well see later
 
 ---
 
-# pure functions / referential transparency
+# Pure functions & Referential transparency
 
-## pure functions don't have side effects
+## Code without side-effects!
 
 ```js
 var square = function (x) {
   return x * x;
-}
+};
 ```
+
+???
+
+- Given the same input, the program has the same effects and outputs
+
+- write code that functions that have predictable output, given some input
+
+- dont depent on global state
+
+- testability
+
+- predictable functions -> predictable system
+
+---
+
+# Pure functions & Referential transparency
 
 ## "An expresssion is referentially transparent if it can be replaced with its value without changing the behavior of the program."
 
@@ -479,28 +498,27 @@ var z = x + y; // var z = 3;
 
 ???
 
-- two properties of parts of computer programs.
+- a properties of parts of computer programs
 
-- Given the same input, the program has the same effects and outputs
-- write code that functions that have predictable output, given some input
-- side effect free, dont depent on global state
 - makes code easier to test
 
-- For programs to be interesting we actually need state and side effects!
+- easier to reason about, can swap a function call with its value
+
+- memoized
 
 ---
 
-# higher order functions
+# Higher order functions
 
-## Primary building blocks
+## Functions as values
+## Functions can take functions as arguments
+## Functions can return functions
 
 ???
 
-- The glue.
+- the glue
+- Primary building blocks
 
-- Functions as values
-- Functions can take functions as arguments
-- Functions can return functions
 
 ---
 
@@ -512,7 +530,9 @@ var adder = function (add) {
     return add + x;
   };
 };
+
 var add2 = adder(2);
+
 add2(4); // 6
 ```
 
@@ -616,11 +636,14 @@ it('maps episodes => name', function () {
 - what programming is about, chrunching data, transforming data from one representation to another
 
 - interesting properties: pure functions, no side effects, immutable structures
-- why pure/immutable? others cannot change what is your starting point/basis
+- why pure/immutable? not to have side effects
+- make sure others cannot change what is your starting point/basis
 
 ---
 
 # assignment
+
+## higher order functions TODO gjør om til result
 
 ## write a recursive function that sums the numbers of a list
 
@@ -637,9 +660,11 @@ it('maps episodes => name', function () {
 ???
 
 - another important aspect of functional programming
+
 - also makes things easier to reason about
 - essentially means when someone changes data, theyre given a copy
 - don't have to worry about others changing your data
+- perfect for passing as part of an event
 
 - not everything is immutable in js
 - easy to loose track of modifications
@@ -665,8 +690,8 @@ it('maps episodes => name', function () {
 # clojure
 
 ```clj
-(def user {:firstname "torgeir"})
-(def modified-user (assoc user :lastname "thoresen"))
+(def user {:firstname "Steve"})
+(def modified-user (assoc user :lastname "Rogers"))
 (= user modified-user) // false
 ```
 
@@ -693,6 +718,8 @@ it('returns new strings', function () {
 });
 ```
 
+???
+
 - strings
 - primitive datatypes, ints
 
@@ -705,7 +732,7 @@ it('returns new strings', function () {
 ```js
 var list = [1, 2, 3]
 
-var res = list.concat(4) // [1, 2, 3, 4]
+var res = list.concat(42) // [1, 2, 3, 42]
 
 list // [1, 2, 3]
 ```
@@ -733,7 +760,7 @@ list // [1, 2, 3, 42]
 
 ---
 
-# immutable data alternatives for js
+# Immutable data alternatives for js
 
 ## [ki](http://ki-lang.org)
 ## [mori](https://github.com/swannodette/mori)
@@ -748,13 +775,13 @@ list // [1, 2, 3, 42]
 
 ---
 
-# immutable.js
+# Immutable.js
 
-## facebook
+## Facebook
 
-## immutable data strcutures for js
+## Immutable data strcutures for js
 
-## idiomatic javascript api
+## Idiomatic javascript api
 
 ???
 
@@ -786,6 +813,8 @@ var modified = initial.push(3);
 
 initial // 1, 2
 modified // 1, 2, 3
+
+initial === modified // false
 ```
 
 ---
@@ -802,13 +831,15 @@ List.of(10, 20, 30, 40, 50).indexOf(30); // 2
 
 # Immutable.js
 
-## List - remove() (..!)
+## List - remove()
 
 ```js
 var initial = List.of(2, 4, 6, 8);
 var modified = initial.remove(2);
 
 modified // 2, 4, 8
+
+initial === modified // false
 ```
 
 ???
@@ -819,13 +850,17 @@ modified // 2, 4, 8
 
 # Immutable.js
 
-## Map - get()
+## Map - get() / set()
 
 ```js
 var Map = Immutable.Map;
 
 var map = Map({ "key": "value" });
 map.get('key'); // value
+
+var modified = map.set('key', 'new value'); // { "key": "new value" }
+
+map === modified // false
 ```
 
 ---
@@ -847,16 +882,16 @@ initial.get(List.of(1)); // list-of-one
 
 ```js
 var first = Map({
-  firstname: 'torgeir'
+  firstname: 'Steve'
 });
 
 var last = Map({
-  lastname: 'thoresen'
+  lastname: 'Rogers'
 });
 
 var merged = first.merge(last);
 
-merged.toJS() // { firstname: 'torgeir', lastname: 'thoresen' }
+merged.toJS() // { firstname: 'Steve', lastname: 'Rogers' }
 ```
 
 ---
@@ -874,6 +909,8 @@ var updated = data.setIn(['some', 'structure', '0'], 42);
 
 updated.toJS(); // { some: { structure: [42, 2, 3 ] } }
 data.toJS(); // { some: { structure: [1, 2, 3 ] } }
+
+data === updated // false
 ```
 
 ???
@@ -892,7 +929,7 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ---
 
-# assignments
+# Part2: Assignments
 
 ## range - create a list with 100 items
 
@@ -920,6 +957,16 @@ addCurried(2)(6); // 8
 
 # cursors
 
+```js
+var map = Map({
+  "some": {
+    "where": { ... }
+  }
+});
+
+var cursor = Cursor.from(map, ['some', 'where']);
+```
+
 ???
 
 - another concept of functional programming, similar to functional lenses
@@ -946,7 +993,7 @@ var data = Immutable.Map({
 
 var episodes = Cursor.from(data, ['episodes']);
 
-var updatedEpisode = episodes.update([2, 'name'], function (previousName) {
+var updatedEpisode = episodes.updateIn([2, 'name'], function (previousName) {
   return previousName + '0';
 });
 ```
@@ -963,7 +1010,7 @@ var updatedEpisode = episodes.update([2, 'name'], function (previousName) {
 
 ---
 
-# assignments
+# Part 2: Assignments
 
 ## create a cursor
 
@@ -1042,7 +1089,7 @@ data.cursor('something').update(function (oldValue) {
 
 ---
 
-# assignments
+# Part 2: Assignments
 
 ## recreate the `Hello` component that greets a name - make it re-render on swap, and change the cursor
 
@@ -1056,10 +1103,6 @@ data.cursor('something').update(function (oldValue) {
 - Is that smart?
 - React is clever, and super fast
 - But we have unnescessary updates, where data does not change - we re-render everything all the time
-
-- react is not a silver bullet
-- atom had to move away from it
-- to fragmented painting, to much gc on changes
 
 - But can we do even better!
 
@@ -1081,7 +1124,10 @@ data.cursor('something').update(function (oldValue) {
 
 ```js
 var Component = React.createClass({
-  mixins: []
+  mixins: [],
+  render: function () {
+    return <div />;
+  }
 });
 ```
 
@@ -1097,13 +1143,16 @@ var alwaysRerender = {
 };
 
 React.createClass({
-  mixins: [alwaysRerender]
+  mixins: [alwaysRerender],
+  render: function () {
+    return <div />;
+  }
 });
 ```
 
 ---
 
-# assignments
+# Part 3: Assignments
 
 ## create a component that only renders the first time! and never again on new React.render() calls
 
@@ -1141,34 +1190,8 @@ Omniscients comes with a default implementation of `shouldComponentUpdate` which
 ---
 
 # Accessible `shouldComponentUpdate`
-## For Just Using React with Immutable Data
-
----
 
 ```js
-var data = immstruct({ something: 'initial' });
-
-var shouldUpdateMixin = {
-  shouldComponentUpdate: require('omniscient/shouldupdate')
-};
-
-var ImmutableComponent = React.createClass({
-  mixins: [shouldUpdateMixin],
-  render: function () {
-    return <h1>{this.props.cursor}</h1>;
-  }
-});
-
-React.render(<ImmutableComponent cursor={data.cursor()} />, document.body);
-
-// Won't re-render
-React.render(<ImmutableComponent cursor={data.cursor()} />, document.body);
-```
-
----
-
-```js
-// Alternative way to access the mixin
 var omniscient = require('omniscient');
 
 var shouldUpdateMixin = {
@@ -1178,9 +1201,18 @@ var shouldUpdateMixin = {
 var ImmutableComponent = React.createClass({
   mixins: [shouldUpdateMixin],
   render: function () {
-    return <h1>{this.props.cursor}</h1>;
+    return <h1>{this.props.cursor.deref()}</h1>;
   }
 });
+
+var data = immstruct({ something: 'initial' });
+
+React.render(<ImmutableComponent cursor={data.cursor('something')} />,
+  document.body);
+
+// Won't re-render
+React.render(<ImmutableComponent cursor={data.cursor('something')} />,
+  document.body);
 ```
 
 ---
@@ -1208,19 +1240,16 @@ every `shouldComponentUpdate` result and for which component it is regarding.
 
 ---
 
-# Assignments
+# Part 3: Assignments
 
-## Using Omniscient's `shouldComponentUpdate` in React
-## Not re-rendering when the cursors are the same.
-## `shouldComponentUpdate` debugger
-## Advanced Task: Extending the provided `shouldComponentUpdate`
+## Use Omniscient's `shouldComponentUpdate` in React
+## Don't re-render when the cursors are the same.
+## Enable debugging for `shouldComponentUpdate`
 
 ---
 
 # Referentially Transparent Components
 ## Syntactic Suger for Functional UIs And Content First Focus
-
----
 
 ```js
 var component = require('omniscient');
@@ -1296,9 +1325,7 @@ Here we also see the interobability with Omniscient and JSX.
 var omniscient = require('omniscient');
 
 // Activate "always JSX" for Omniscient
-var component = omniscient.withDefaults({
-  jsx: true
-});
+var component = omniscient.withDefaults({ jsx: true });
 
 var NameBox = component(function ({name}) {
   return <em>{name}</em>;
@@ -1313,11 +1340,11 @@ React.render(Greeting({ name: 'Starlord' }), el);
 
 ---
 
+# Compose with children
+
 ```js
 // Activate "always JSX" for Omniscient
-var component = omniscient.withDefaults({
-  jsx: true
-});
+var component = omniscient.withDefaults({ jsx: true });
 
 var NameBox = component(function ({children}) {
   return <em>{children}</em>;
@@ -1332,7 +1359,7 @@ React.render(Greeting({ name: 'Starlord' }), el);
 
 ---
 
-# Assignments
+# Part 3: Assignments
 
 ## Hello Omniscient!
 ## Using Omniscient with JSX
@@ -1343,58 +1370,12 @@ React.render(Greeting({ name: 'Starlord' }), el);
 
 ---
 
-# Customizing Omniscient Globally
-
-```js
-
-var AlwaysRerender = function () {
-  return true;
-};
-
-// Override shouldComponentUpdate default
-var component = omniscient.withDefaults({
-  shouldComponentUpdate: AlwaysRerender
-});
-
-var Greeting = component(function ({name}){
-  return <h1>Hello, {name}!</h1>;
-});
-
-React.render(Greeting({ name: 'Clinton Barton' }), el);
-
-// Will re-render
-React.render(Greeting({ name: 'Clinton Barton' }), el);
-```
-
----
-
-# Customizing Omniscient Through Mixins
-
-```js
-var AlwaysRerender = {
-  shouldComponentUpdate: function () {
-    return true;
-  }
-};
-
-var Greeting = component(AlwaysRerender, function ({name}){
-  return <h1>Hello, {name}!</h1>;
-});
-
-React.render(Greeting({ name: 'Natalia Romanova' }), el);
-
-// Will re-render
-React.render(Greeting({ name: 'Natalia Romanova' }), el);
-```
-
----
-
-# Also For React Life Cycle Methods
+# Mixins for React Life Cycle Methods
 
 ```js
 var mixins = {
   componentDidMount: function () {
-    var element = this.getDOMNode();
+    var element = React.findDOMNode(this);
     // do something with element
   }
 };
@@ -1426,7 +1407,7 @@ React.render(Greeting({ name: 'Natalia Romanova' }), el);
 
 ---
 
-# Passing Arguments Instead Of Contexts
+# Functional style
 
 ```js
 function onClick (props) {
@@ -1444,7 +1425,7 @@ React.render(Greeting({ name: 'Natalia Romanova' }), el);
 
 ---
 
-## Assignments
+## Part 3: Assignments
 
 ## Components With Overriden `shouldComponentUpdate`
 ## Components With A Set Of Mixins.
@@ -1455,7 +1436,6 @@ React.render(Greeting({ name: 'Natalia Romanova' }), el);
 ---
 
 # Typical Omniscient Flow
-## The Render Loop of Omniscient + Immstruct
 
 ```js
 var Count = component(({counter}) =>
@@ -1481,52 +1461,9 @@ setInterval(
 ```
 
 ---
+class: center, middle
 
-
-immutable data har vært vanskelig i js, om gjør det
-har kommet flere i det siste, flux gjør det, men mye mer overhead i arkitektur
-
-vi syns det mangler for javascript
-
-# omniscient
-
-react med omniscient should component update
-
-vise omniscient syntaktisk sukker
-purity, ref. transparency, rettningslinjer til hvordan du kan lage funksjonelle grensesnitt
-lage komponenter som følge disse prinsippene
-rene på samme måte som funksjonene er rene
-ref. transparent på samme måte som funksjonene er ref. transparent
-
-samme gagn for komponenter som man har av funksjonell kode
-opnådd målet med workshoppoen
-
-kan oppnå akkurat det samme med ren react og immutable js
-ender med å implementere noe som ligner på immstruct og omniscient
-mindre battle tested løsning
-
-kan bruke state - i blant trenger man det - selvfølgelig er det mulig
-
-endrer fokusområdet til content first
-alt en komponent trenger å være er innhold
-composability av innhold
-render funksjon som er lett å ressonnere over
-tar inn argument og jobber bare med det - pure
-referencial transparency
-higher order components - komponenter tar inn komponenter, returnerer andre komponenter - compsable
-
-isteden for funksjonell programmering på funksjonsnivå
-har funksjonell programmering på komponentnivå
-
-av og til trenger man ekstra funksjonalitet
-lagt opp til at den er enkel på å dele via mixins (traits)
-legge funksjonene utenfor komponentene
-
-## assignments
-
-- legge til én mixin
-- legge til flere mixins
-- legge til react life cycle mixins (alle er garantert til å bli utført, hvis det finnes flere)
+# ?
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">

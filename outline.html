@@ -47,12 +47,6 @@ class: center, middle
 
 ---
 
-## [Slides](http://omniscient.github.io/omniscient-workshop/)
-
-## [Playground](http://omniscientjs.github.io/workshop/)
-
----
-
 # The Beginning
 ## Static HTML, No JS
 
@@ -115,21 +109,6 @@ Built for changes over time, and between each change it essentially does a refre
 # React.js
 
 ```js
-React.render(
-  React.DOM.h1({}, 'Hello, world!'),
-  document.body
-);
-```
-
-???
-
-Many, or most, of you might have seen React before, but here is an example, in plain old JS.
-
----
-
-# Custom components
-
-```js
 var Hello = React.createClass({
   render: function () {
     return React.DOM.h1({}, 'Hello, world!');
@@ -141,6 +120,8 @@ React.render(React.createElement(Hello), document.body);
 ```
 
 ???
+
+Many, or most, of you might have seen React before, but here is an example, in plain old JS.
 
 Or we can make a component of it, which we can re-use in different settings and compose.
 
@@ -1217,29 +1198,6 @@ React.render(<ImmutableComponent cursor={data.cursor('something')} />,
 
 ---
 
-# Debugging `shouldComponentUpdate`
-
-```js
-var omniscient = require('omniscient');
-
-// Activate debugging
-omniscient.shouldComponentUpdate.debug();
-
-var shouldUpdateMixin = {
-  shouldComponentUpdate: omniscient.shouldComponentUpdate
-};
-
-// ...
-```
-
-???
-
-Sometimes you want to know why your components re-render or if it re-renders or not. You can
-use `shouldComponentUpdate`'s `.debug()` function. This will activate log statements for
-every `shouldComponentUpdate` result and for which component it is regarding.
-
----
-
 # Part 3: Assignments
 
 ## Use Omniscient's `shouldComponentUpdate` in React
@@ -1459,6 +1417,14 @@ setInterval(
   () => data.cursor('counter').update(i => i + 1),
   2000);
 ```
+
+---
+
+# assignment
+
+## Implement filterable list
+
+TODO Lag lf med jsx
 
 ---
 class: center, middle

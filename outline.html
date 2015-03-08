@@ -29,6 +29,12 @@
 
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 
+      .remark-notes,
+      .remark-notes-preview
+      {
+        color: black;
+      }
+
       .remark-slide-content {
         background: linear-gradient(to bottom, #2980B9 0%, #3e5771 100%);
       }
@@ -248,7 +254,7 @@ var Greeting = React.createClass({
 });
 
 var myProps = { user: { name: 'Wade Wilson' } };
-React.render(<Greeting user={myProps.user) />, document.body);
+React.render(<Greeting user={myProps.user} />, document.body);
 ```
 
 ---
@@ -1059,7 +1065,7 @@ data.cursor('something').update(function (oldValue) {
 
 ---
 
-# React sin shouldComponentUpdate
+# React's shouldComponentUpdate
 
 ## A react performance optimization
 ## Override the function to tell react when a rerender is not nescessary
@@ -1074,7 +1080,7 @@ data.cursor('something').update(function (oldValue) {
 # Mixins
 
 ```js
-React.createClass({
+var Component = React.createClass({
   mixins: []
 });
 ```
@@ -1084,14 +1090,14 @@ React.createClass({
 # shouldComponentUpdate
 
 ```js
-var AlwaysRerender = {
+var alwaysRerender = {
   shouldComponentUpdate: function () {
     return true;
   }
 };
 
 React.createClass({
-  mixins: [AlwaysRerender]
+  mixins: [alwaysRerender]
 });
 ```
 

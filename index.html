@@ -41,6 +41,12 @@
       .remark-slide-content {
         background: linear-gradient(to bottom, #2980B9 0%, #3e5771 100%);
       }
+
+      .remark-slide-content img {
+        max-width: 70%;
+        margin: 0 auto;
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -318,6 +324,8 @@ React.render(<Greeting name="T'Challa" />, document.body);
 # DOM is a Side-Effect
 
 ## Abstract Side-Effects to Edges of Communication Graph
+
+![Data flow](./dataflow-edge-sideeffects.png)
 
 ???
 
@@ -1076,12 +1084,14 @@ data.cursor('something').update(function (oldValue) {
 ---
 
 # React's shouldComponentUpdate
-
-## A react performance optimization
 ## Override the function to tell react when a rerender is not nescessary
+
+![Faded Data flow](./flow_faded.svg)
+
 
 ???
 
+- A react performance optimization
 - Tell a component when it needs to render
 - Can pass it as a mixin to components
 

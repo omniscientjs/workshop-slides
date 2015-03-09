@@ -1,5 +1,5 @@
 # omniscient-workshop
-Omniscient Workshop for Booster2015
+Omniscient Workshop for Booster2015 - [Slides](https://omniscientjs.github.io/workshop-slides)
 
 ## Description sent to booster
 

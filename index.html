@@ -1053,12 +1053,12 @@ var updatedEpisode = episodes.updateIn([2, 'name'], function (previousName) {
 # immstruct example
 
 ```js
-var data = immstruct({ something: 'initial' });
+var data = immstruct({ something: 'initial', another: 'part' });
 
 data.on('swap', function (newData, oldData, path) {
   console.log(
-    newData.toJS(), // { something: "updated" }
-    oldData.toJS(), // { something: "initial" }
+    newData.toJS(), // { something: "updated", another: 'part' }
+    oldData.toJS(), // { something: "initial", another: 'part' }
     path) // ['something']
 });
 

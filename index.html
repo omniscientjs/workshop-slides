@@ -787,12 +787,6 @@ list // [1, 2, 3, 42]
 - idiomatic: e.g. treat objects like you otherwise treat objects in javascript
 - you have access to the same operations
 
-- because data is immutable, data never changes, data can be shared
-- compared to freeze, this implementation can be fast
-- sub trees in the larger structure can share information
-- persistent data structures
-- share structures
-
 ---
 
 # Immutable.js
@@ -810,6 +804,15 @@ modified // 1, 2, 3
 
 initial === modified // false
 ```
+
+???
+
+- because data is immutable, data never changes, data can be shared
+- compared to freeze, this implementation can be fast
+- sub trees in the larger structure can share information
+- persistent data structures
+- share structures
+
 
 ---
 

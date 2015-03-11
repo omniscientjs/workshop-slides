@@ -89,8 +89,9 @@ As time went and javascript got more and more popular and as we moved to thicker
 
 ???
 
-We also got things like Knockout, and later Angular, Ember and such. We could bind a model to a view. The problem is, you very rarely have a model which you can bind directly to a view, so you can have view models, or other representations, but then you’d have to either listen for propagating changes and having weird hacks for propagating changes in the object models doing dirty bit checking or some other polling. And you still have this built up state that’s not too easily reproducible or predictable. We still don’t have the same static mental model as in the pure HTML days
+- We also got things like Knockout, and later Angular, Ember and such. We could bind a model to a view. The problem is, you very rarely have a model which you can bind directly to a view, so you can have view models, or other representations, but then you’d have to either listen for propagating changes and having weird hacks for propagating changes in the object models doing dirty bit checking or some other polling. And you still have this built up state that’s not too easily reproducible or predictable. We still don’t have the same static mental model as in the pure HTML days
 
+- "HTML should be just a projection of app state, not a source of truth!" - Daniel Steigerwald
 
 ---
 

@@ -676,7 +676,9 @@ it('maps episodes => name', function () {
 
 - some languages have immutable data by default!
 - youre forced to keep the output of your operations
-- youll never see a void functions
+- this update can be fast
+- data can be shared between these to objects, because data is never chagned, its immutable
+- well see how a similar effect can be reached in javascript as well in a bit
 
 ---
 
@@ -762,7 +764,7 @@ list // [1, 2, 3, 42]
 
 ???
 
-- smart, nerdy guy at facebook, lee byron
+- guy at facebook, lee byron
 - immutable structures for js
 
 - idiomatic: e.g. treat objects like you otherwise treat objects in javascript
@@ -910,7 +912,7 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ## map - map over the numbers to triple every number
 
-## filter - filter out/removes every odd number
+## filter - filter out/remove every odd number
 
 ## reduce - reduce the numbers to find their sum
 
@@ -920,7 +922,7 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ---
 
-# curry
+# Curry
 
 ```js
 var add = function (a, b) { return a + b };
@@ -930,7 +932,7 @@ addCurried(2)(6); // 8
 
 ---
 
-# cursors
+# Cursors
 
 ```js
 var map = Map({
@@ -952,7 +954,7 @@ var cursor = Cursor.from(map, ['some', 'where']);
 
 ---
 
-# cursors example
+# Cursors example
 
 ```js
 var data = Immutable.Map({

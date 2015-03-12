@@ -668,8 +668,6 @@ it('maps episodes => name', function () {
 - perfect for passing as part of an event
 
 - not everything is immutable in js
-- easy to loose track of modifications
-- what can we do about it?
 
 ---
 
@@ -700,7 +698,9 @@ it('maps episodes => name', function () {
 
 - some languages have immutable data by default!
 - youre forced to keep the output of your operations
-- youll never see a void functions
+- this update can be fast
+- data can be shared between these to objects, because data is never chagned, its immutable
+- well see how a similar effect can be reached in javascript as well in a bit
 
 ---
 
@@ -786,7 +786,7 @@ list // [1, 2, 3, 42]
 
 ???
 
-- smart, nerdy guy at facebook, lee byron
+- guy at facebook, lee byron
 - immutable structures for js
 
 - idiomatic: e.g. treat objects like you otherwise treat objects in javascript
@@ -943,7 +943,7 @@ updated.inspect(); // "Map { some: Map { structure: List [ 42, 2, 3 ] } }"
 
 ---
 
-# curry
+# Curry
 
 ```js
 var add = function (a, b) { return a + b };
@@ -953,7 +953,7 @@ addCurried(2)(6); // 8
 
 ---
 
-# cursors
+# Cursors
 
 ```js
 var map = Map({
@@ -975,7 +975,7 @@ var cursor = Cursor.from(map, ['some', 'where']);
 
 ---
 
-# cursors example
+# Cursors example
 
 ```js
 var data = Immutable.Map({
